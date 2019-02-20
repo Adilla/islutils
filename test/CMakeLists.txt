@@ -17,6 +17,11 @@ set(TEST_INPUTS
     1mmWithoutInitStmt.c
     stencil.c)
 
+set(BLAS_MATCHES
+    main)
+add_executable("main" "main.cc")
+target_link_libraries("main" islutils)
+
 add_custom_target(check COMMAND echo "Running all")
 
 foreach(file ${TEST_INPUTS})

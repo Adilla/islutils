@@ -586,33 +586,33 @@ static isl::multi_union_pw_aff getScheduleTile(isl::schedule_node node,
   return sched;
 }
 
-static isl::multi_union_pw_aff getParametricScheduleTile(isl::schedule_node node,
-                                                        std::vector<int> tileSizes) {
+// static isl::multi_union_pw_aff getParametricScheduleTile(isl::schedule_node node,
+//                                                         std::vector<int> tileSizes) {
 
-  assert(tileSizes.size() != 0 && "empty tileSizes array");
-  isl::space space = isl::manage(isl_schedule_node_band_get_space(node.get()));
-  unsigned dims = space.dim(isl::dim::set);
-  assert(dims == tileSizes.size() &&
-         "number of dimensions should match tileSizes size");
+//   assert(tileSizes.size() != 0 && "empty tileSizes array");
+//   isl::space space = isl::manage(isl_schedule_node_band_get_space(node.get()));
+//   unsigned dims = space.dim(isl::dim::set);
+//   assert(dims == tileSizes.size() &&
+//          "number of dimensions should match tileSizes size");
 
-  isl::multi_val sizes = isl::multi_val::zero(space);
-  for (unsigned i = 0; i < dims; ++i) {
-    int tileSize = tileSizes[i];
-    sizes = sizes.set_val(i, isl::val(node.get_ctx(), tileSize));
-  }
+//   isl::multi_val sizes = isl::multi_val::zero(space);
+//   for (unsigned i = 0; i < dims; ++i) {
+//     int tileSize = tileSizes[i];
+//     sizes = sizes.set_val(i, isl::val(node.get_ctx(), tileSize));
+//   }
 
-  isl::multi_union_pw_aff sched = node.band_get_partial_schedule();
-  for (unsigned i = 0; i < dims; ++i) {
+//   isl::multi_union_pw_aff sched = node.band_get_partial_schedule();
+//   for (unsigned i = 0; i < dims; ++i) {
 
-    isl::union_pw_aff upa = sched.get_union_pw_aff(i);
-    isl::val v = sizes.get_val(i);
-    upa = upa.scale_down_val(v);
-    upa = upa.floor();
-    sched = sched.set_union_pw_aff(i, upa);
-  }
-  return sched;
+//     isl::union_pw_aff upa = sched.get_union_pw_aff(i);
+//     isl::val v = sizes.get_val(i);
+//     upa = upa.scale_down_val(v);
+//     upa = upa.floor();
+//     sched = sched.set_union_pw_aff(i, upa);
+//   }
+//   return sched;
 
-}
+// }
 
 static isl::multi_union_pw_aff swapDims(isl::multi_union_pw_aff ps,
                                         int firstDim, int secondDim) {
@@ -673,62 +673,63 @@ TEST(Transformer, DISABLED_MatchGemm) {
 }
 
 
-TEST(Transformer, SIMDCodegen) {
+// TEST(Transformer, SIMDCodegen) {
 
-  using namespace matchers;
-  using namespace builders;
+//   using namespace matchers;
+//   using namespace builders;
 
-  auto ctx = ScopedCtx(pet::allocCtx());
-  auto petScop = pet::Scop::parseFile(ctx, "inputs/gemm.c");
-  auto scop = petScop.getScop();
+//   auto ctx = ScopedCtx(pet::allocCtx());
+//   auto petScop = pet::Scop::parseFile(ctx, "inputs/gemm.c");
+//   auto scop = petScop.getScop();
   
-  isl::union_map reads = scop.reads.curry();
-  isl::union_map writes = scop.mustWrites.curry();
+//   isl::union_map reads = scop.reads.curry();
+//   isl::union_map writes = scop.mustWrites.curry();
 
-  isl::schedule_node root = scop.schedule.get_root().get_child(0).get_child(0).get_child(0);
+//   isl::schedule_node root = scop.schedule.get_root().get_child(0).get_child(0).get_child(0);
 
-  root.dump();
-  root.band_get_partial_schedule().dump();
-  root.band_get_partial_schedule()
+//   root.dump();
+//   root.band_get_partial_schedule().dump();
+//   root.band_get_partial_schedule()
 
-  // reads = reads.intersect_domain(root.get_domain());
-  // reads.dump();
-
-
-  // auto isStrideZeroOne = [&](isl::schedule_node n) {
-
-  //   auto accStrideZero = access(dim(-1, stride(ctx, 0)));
-  //   auto accStrideOne = access(dim(-1, stride(ctx, 1)));
-  //   auto compliantAccesses = allOf(accStrideOne);
-  //   auto matchingReads = match(reads, compliantAccesses);
-  //   auto matchingWrites = match(writes, compliantAccesses);
-
-  //   return matchingReads.size() == 1 && matchingWrites.size() == 1;
-  // };
+//   // reads = reads.intersect_domain(root.get_domain());
+//   // reads.dump();
 
 
 
-  // isl::schedule_node node;
-  // int leafDepth;
+//   // auto isStrideZeroOne = [&](isl::schedule_node n) {
 
-  // auto isInnermostCoincident = [&node, &leafDepth] (isl::schedule_node n) {
-  //   if (isl_schedule_node_has_children(n.get()) == false &&
-  //     isl_schedule_node_band_member_get_coincident(n.get(), 0) == true) {
-  //       node = n;
-  //       leafDepth = isl_schedule_node_get_tree_depth(n.get());
-  //       return true;
-  //   }
-  //   else {
-  //     return false;
-  //   }
-  // };
+//   //   auto accStrideZero = access(dim(-1, stride(ctx, 0)));
+//   //   auto accStrideOne = access(dim(-1, stride(ctx, 1)));
+//   //   auto compliantAccesses = allOf(accStrideOne);
+//   //   auto matchingReads = match(reads, compliantAccesses);
+//   //   auto matchingWrites = match(writes, compliantAccesses);
+
+//   //   return matchingReads.size() == 1 && matchingWrites.size() == 1;
+//   // };
 
 
-  // auto matcher =
-  //   band([&] (isl::schedule_node n) {
-  //     return isInnermostCoincident(n) && isStrideZeroOne(n);
-  //   },
-  //   leaf());
+
+//   // isl::schedule_node node;
+//   // int leafDepth;
+
+//   // auto isInnermostCoincident = [&node, &leafDepth] (isl::schedule_node n) {
+//   //   if (isl_schedule_node_has_children(n.get()) == false &&
+//   //     isl_schedule_node_band_member_get_coincident(n.get(), 0) == true) {
+//   //       node = n;
+//   //       leafDepth = isl_schedule_node_get_tree_depth(n.get());
+//   //       return true;
+//   //   }
+//   //   else {
+//   //     return false;
+//   //   }
+//   // };
+
+
+//   // auto matcher =
+//   //   band([&] (isl::schedule_node n) {
+//   //     return isInnermostCoincident(n) && isStrideZeroOne(n);
+//   //   },
+//   //   leaf());
 
 
 
@@ -736,38 +737,38 @@ TEST(Transformer, SIMDCodegen) {
 
   
 
-  // auto accessesStrideZero = access(dim(-1, stride(ctx, 0)));
-  // auto accessesStrideOne = access(dim(-2, stride(ctx, 1)));
-  // auto compliantAccesses = allOf(accessesStrideOne);
-  // auto matchingReads = match(reads, compliantAccesses);
-  // auto matchingWrites = match(writes, compliantAccesses);
+//   // auto accessesStrideZero = access(dim(-1, stride(ctx, 0)));
+//   // auto accessesStrideOne = access(dim(-2, stride(ctx, 1)));
+//   // auto compliantAccesses = allOf(accessesStrideOne);
+//   // auto matchingReads = match(reads, compliantAccesses);
+//   // auto matchingWrites = match(writes, compliantAccesses);
 
-  // std::cout << matchingReads.size() << std::endl;
-  // for (auto &mr : matchingReads) {
-  //   for (const auto &ca : compliantAccesses) {
-  //      auto cs = mr[ca].candidateSpaces();
-  //      for (auto data : cs) {
-  //        data.dump();
-  //     }
-  //   }
-  // }
+//   // std::cout << matchingReads.size() << std::endl;
+//   // for (auto &mr : matchingReads) {
+//   //   for (const auto &ca : compliantAccesses) {
+//   //      auto cs = mr[ca].candidateSpaces();
+//   //      for (auto data : cs) {
+//   //        data.dump();
+//   //     }
+//   //   }
+//   // }
 
 
-  // std::cout << matchingReads.size() << std::endl;
-  // isl::schedule_node node;
-  // // We want to capture the innermost loop.
-  // auto matcher = 
-  //   band(node,
-  //     and_(not_(hasDescendant(band(anyTree()))),
-  //       [&node] () {
-  //         if (isl_schedule_node_band_member_get_coincident(node.get(), 0) == true
-  //       }),
-  //       anyTree());
+//   // std::cout << matchingReads.size() << std::endl;
+//   // isl::schedule_node node;
+//   // // We want to capture the innermost loop.
+//   // auto matcher = 
+//   //   band(node,
+//   //     and_(not_(hasDescendant(band(anyTree()))),
+//   //       [&node] () {
+//   //         if (isl_schedule_node_band_member_get_coincident(node.get(), 0) == true
+//   //       }),
+//   //       anyTree());
 
-  // // Access matcher for a compliant access pattern
-  // auto A = matchers::arrayPlaceholder();
+//   // // Access matcher for a compliant access pattern
+//   // auto A = matchers::arrayPlaceholder();
  
-}
+// }
 
 TEST(Transformer, DISABLED_MatchMatmul) {
 
