@@ -32,7 +32,7 @@ bool findBatchedGemm(isl::ctx ctx, Scop scop) {
 	writes.dump();
 
 	//foundGemm = true;
-	if (findBatchedGemmAccess(ctx, reads, writes) == true) {
+	if (findBatchGemmAccess(ctx, reads, writes) == true) {
 		foundGemm = true;
 	}
 
@@ -75,11 +75,12 @@ bool findTransposedGemm(isl::ctx ctx, Scop scop) {
 
 
 	auto res = findTransposeGemmAccess(ctx, reads, writes);
-	//if (res == true) {
-	// 	std::cout << "found transposed access" << std::endl;
-	// } else {
-	// 	std::cout << "did not find" << std::endl;
-	// }
+
+	if (res == true) {
+		std::cout << "found transposed access" << std::endl;
+	} else {
+		std::cout << "did not find" << std::endl;
+	}
 	return true;
 }
 
