@@ -6,9 +6,27 @@
 
 #IncludeRegexTransform: 
 
+/home/adilla/Documents/SchedTrees/islutils/test/blas_access_matchers.h
+utils.h
+/home/adilla/Documents/SchedTrees/islutils/test/utils.h
+
+/home/adilla/Documents/SchedTrees/islutils/test/blas_matchers.h
+blas_access_matchers.h
+/home/adilla/Documents/SchedTrees/islutils/test/blas_access_matchers.h
+blas_tree_matchers.h
+/home/adilla/Documents/SchedTrees/islutils/test/blas_tree_matchers.h
+
+/home/adilla/Documents/SchedTrees/islutils/test/blas_tree_matchers.h
+utils.h
+/home/adilla/Documents/SchedTrees/islutils/test/utils.h
+
 /home/adilla/Documents/SchedTrees/islutils/test/main.cc
 iostream
 -
+blas_matchers.h
+/home/adilla/Documents/SchedTrees/islutils/test/blas_matchers.h
+
+/home/adilla/Documents/SchedTrees/islutils/test/utils.h
 islutils/access_patterns.h
 /home/adilla/Documents/SchedTrees/islutils/test/islutils/access_patterns.h
 islutils/builders.h
