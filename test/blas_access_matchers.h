@@ -23,13 +23,14 @@ bool findGemmAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
 		int k = matchReads[0][_k].payload().inputDimPos_;
 		int ii = matchWrites[0][_ii].payload().inputDimPos_;
 		int jj = matchWrites[0][_jj].payload().inputDimPos_;
-		bool isMatch = ((ii == 0) && (jj == 1) && (ii == i) && (jj == j) && (k == 2)); 
+		bool isMatch = ((ii == 0) && (jj == 1) && 
+										(ii == i) && (jj == j) && 
+										(k == 2)); 
 		return isMatch;
 	} else { 
 		return false; 
 	}
 }
-
 
 bool findBatchedGemmAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
 	auto _i = placeholder(ctx);
@@ -39,19 +40,28 @@ bool findBatchedGemmAccess(isl::ctx ctx, isl::union_map reads, isl::union_map wr
 	auto _ii = placeholder(ctx);
 	auto _jj = placeholder(ctx);
 	auto _bb = placeholder(ctx);
-	auto _A = arrayPlaceholder();
-	auto _B = arrayPlaceholder();
-	auto _C = arrayPlaceholder();
-	auto localReads = allOf(access(_A, _b, _i, _j), 
-													access(_B, _b, _i, _k), 
-													access(_C, _b, _k, _j));
-	auto localWrites = allOf(access(_A, _bb, _ii, _jj));
+	auto localReads = allOf(access(_b, _i, _j), 
+													access(_b, _i, _k), 
+													access(_b, _k, _j));
+	auto localWrites = allOf(access(_bb, _ii, _jj));
 	auto matchReads = match(reads, localReads);
 	auto matchWrites = match(writes, localWrites);
 
-	// From what I understand, this test should be enough to ensure that 
-	// we indeed are in the presence of a bached gemm-like access function.
-	return ((matchReads.size() == 1u) && (matchWrites.size() == 1u));
+	if ((matchReads.size() == 1u) && (matchWrites.size() == 1u)) {
+		int b = matchReads[0][_b].payload().inputDimPos_;
+		int i = matchReads[0][_i].payload().inputDimPos_;
+		int j = matchReads[0][_j].payload().inputDimPos_;
+		int k = matchReads[0][_k].payload().inputDimPos_;
+		int bb = matchWrites[0][_bb].payload().inputDimPos_;
+		int ii = matchWrites[0][_ii].payload().inputDimPos_;
+		int jj = matchWrites[0][_jj].payload().inputDimPos_;
+		bool isMatch = ((bb == 0) && (ii == 1) && (jj == 2) && 
+										(bb == b) && (ii == i) && (jj == j) && 
+										(k == 3)); 
+		return isMatch;
+	} else { 
+		return false; 
+	}
 }
 
 // bool find2DTransposedAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {

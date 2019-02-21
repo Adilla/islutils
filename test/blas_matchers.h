@@ -32,7 +32,7 @@ bool findBatchedGemm(isl::ctx ctx, Scop scop) {
 	writes.dump();
 
 	//foundGemm = true;
-	if (findTransposeGemmAccess(ctx, reads, writes) == true) {
+	if (findBatchedGemmAccess(ctx, reads, writes) == true) {
 		foundGemm = true;
 	}
 
