@@ -47,6 +47,40 @@ bool findBatchedGemm(isl::ctx ctx, Scop scop) {
 	return foundGemm;
 }
 
+bool findTransposedGemm(isl::ctx ctx, Scop scop) {
+	isl::union_map reads = scop.reads.curry();
+	isl::union_map writes = scop.mustWrites.curry();
+
+	std::cout <<	reads.get_map_list().size() << std::endl;
+
+
+	std::vector<isl::union_map> allreads;
+	
+	auto mapList = reads.get_map_list();
+	int max = mapList.size();
+
+	if (max > 0) {
+		auto firstDomain = mapList.get_map(0).domain();
+
+		int i;
+		// Iterate over list to identify different domain and 
+		// split the list into lists of maps.
+		for (i = 0; i < max; ++i) {
+			thisMap = mapList.get_map(i).
+			auto test = reads.get_map_list().get_map(i);
+		
+	}
+
+
+	//auto res = findTransposeGemmAccess(ctx, reads, writes);
+	//if (res == true) {
+	// 	std::cout << "found transposed access" << std::endl;
+	// } else {
+	// 	std::cout << "did not find" << std::endl;
+	// }
+	return true;
+}
+
 bool findAndReplaceGemm(isl::ctx ctx, Scop scop) {
 	auto dependences = computeAllDependences(scop);
 	scop.schedule = mergeIfTilable(scop.schedule.get_root(), dependences).get_schedule();

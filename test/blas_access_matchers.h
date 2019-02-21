@@ -6,9 +6,6 @@ using namespace matchers;
 
 namespace blasAccessMatchers {
 
-
-
-
 bool findGemmAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
 	auto _i = placeholder(ctx);
 	auto _j = placeholder(ctx);
@@ -23,13 +20,31 @@ bool findGemmAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
 	auto matchReads = match(reads, localReads);
 	auto matchWrites = match(writes, localWrites);
 
-	// Not sure of what needs to be tested.
 	return ((matchReads.size() == 1u) && (matchWrites.size() == 1u));
-	// isl::schedule_node replaceWithGemm(isl::schedule_node root, isl::schedule_node node) {
-	//     if root == node {
+}
 
-	//     }
-	// }
+
+bool findBatchedGemmAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
+	auto _i = placeholder(ctx);
+	auto _j = placeholder(ctx);
+	auto _k = placeholder(ctx);
+	auto _b = placeholder(ctx);
+	auto _ii = placeholder(ctx);
+	auto _jj = placeholder(ctx);
+	auto _bb = placeholder(ctx);
+	auto _A = arrayPlaceholder();
+	auto _B = arrayPlaceholder();
+	auto _C = arrayPlaceholder();
+	auto localReads = allOf(access(_A, _b, _i, _j), 
+													access(_B, _b, _i, _k), 
+													access(_C, _b, _k, _j));
+	auto localWrites = allOf(access(_A, _bb, _ii, _jj));
+	auto matchReads = match(reads, localReads);
+	auto matchWrites = match(writes, localWrites);
+
+	// From what I understand, this test should be enough to ensure that 
+	// we indeed are in the presence of a bached gemm-like access function.
+	return ((matchReads.size() == 1u) && (matchWrites.size() == 1u));
 }
 
 // bool find2DTransposedAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
@@ -50,49 +65,62 @@ bool findGemmAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
 // }
 
 bool findTransposeGemmAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
-	auto i = placeholder(ctx);
-	auto j = placeholder(ctx);
-	auto k = placeholder(ctx);
-	auto ii = placeholder(ctx);
-	auto jj = placeholder(ctx);
+	auto _i = placeholder(ctx);
+	auto _j = placeholder(ctx);
+	auto _k = placeholder(ctx);
+	auto _it = placeholder(ctx);
+	auto _jt = placeholder(ctx);
+	// auto ii = placeholder(ctx);
+	// auto jj = placeholder(ctx);
 
 	auto A = arrayPlaceholder();
 	auto B = arrayPlaceholder();
 	auto C = arrayPlaceholder();
+	auto D = arrayPlaceholder();
+
+
+	reads.dump();
+
 
 	// Vérifier si ca marche vraiment.
-	auto localReads = allOf(access(A, i, j), access(B, i, k), access(C, j, k), access(C, k, j));
-	auto localWrites = allOf(access(C, ii, jj), access(A, ii, jj));
+	auto localReads = allOf(access(A, _i, _j), 
+													access(B, _i, _k), 
+													access(C, _j, _k), 
+													access(B, _j, _i));
+	//auto localWrites = allOf(access(A, _i, _j), access(B, _it, _jt));
 
 	auto matchReads = match(reads, localReads);
-	auto matchWrites = match(writes, localWrites);
+	
+
+	for (const auto &mr : matchReads) {
+		std::cout << mr[_i].payload().inputDimPos_ << std::endl;
+		std::cout << "\n" << std::endl;
+		std::cout << mr[_i].candidateSpaces().size() << std::endl;
+		std::cout << "\n" << std::endl;
+		std::cout << "\n" << std::endl;
+	}
+	
+	//auto matchWrites = match(writes, localWrites);
 
 	// Not sure of what needs to be tested.
-	return ((matchReads.size() == 1u) && (matchWrites.size() == 1u));
+	std::cout << matchReads.size() << std::endl;
+
+	// int it = matchReads[0][_it].payload().inputDimPos_;
+	// int jt = matchReads[0][_jt].payload().inputDimPos_;
+	// int i = matchReads[0][_i].payload().inputDimPos_;
+	// int j = matchReads[0][_j].payload().inputDimPos_;
+	// int k = matchReads[0][_k].payload().inputDimPos_;
+
+	// std::cout << it << std::endl;
+	// std::cout << jt << std::endl;
+	// std::cout << i << std::endl;
+	// std::cout << j << std::endl;
+	// std::cout << k << std::endl; 
+	
+	
+	return true;//((matchReads.size() == 1u) && (matchWrites.size() == 1u));
 }
 
-bool findBatchedGemmAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
-	auto i = placeholder(ctx);
-	auto j = placeholder(ctx);
-	auto k = placeholder(ctx);
-	auto b = placeholder(ctx);
-
-	auto ii = placeholder(ctx);
-	auto jj = placeholder(ctx);
-	auto bb = placeholder(ctx);
-
-	auto A = arrayPlaceholder();
-	auto B = arrayPlaceholder();
-	auto C = arrayPlaceholder();
-
-	auto localReads = allOf(access(A, b, i, j), access(B, b, i, k), access(C, b, k, j));
-	auto localWrites = allOf(access(A, bb, ii, jj));
-
-	auto matchReads = match(reads, localReads);
-	auto matchWrites = match(writes, localWrites);
-
-	return ((matchReads.size() == 1u) && (matchWrites.size() == 1u));
-}
 
 
 } // namespace blasMatchers
