@@ -130,5 +130,28 @@ bool findTransposeBatchGemmAccess(isl::ctx ctx, isl::union_map reads, isl::union
 	}
 }
 
+bool findAxpyAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
+	auto _i = placeholder(ctx);
+	auto _ii = placeholder(ctx);
+
+	auto localReads = allOf(access(_i));
+	auto localWrites = allOf(access(_ii));
+
+	auto matchReads = match(reads, localReads);
+	auto matchWrites = match(writes, localWrites);
+
+	if ((matchReads.size() == 2u) && (matchWrites.size() == 1u)) {
+		int i = matchReads[0][_i].payload().inputDimPos_;
+		int i1 = matchReads[1][_i].payload().inputDimPos_;
+		int ii = matchWrites[0][_ii].payload().inputDimPos_;
+		// If I understand well, at this point, we should now that 
+		// both i occurences are equals, otherwise there would be no
+		// match. So testing with i should be enough.
+		bool isMatch = ((ii == 0) && (ii == i)); 
+		return isMatch;
+	} else {
+		return false;
+	}
+}
 } // namespace blasMatchers
 #endif
