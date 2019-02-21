@@ -5,12 +5,12 @@ int B[1024][1024];
 int alpha, beta;
 
 void tgemm() {
-#pragma scop
+
 for (int i = 0; i < 1024; i++)
     for (int j = 0; j < 1024; j++) 
         B[i][j] = B[j][i];
 
-
+#pragma scop
 
   for (int i = 0; i < 1024; i++)
     for (int j = 0; j < 1024; j++) {

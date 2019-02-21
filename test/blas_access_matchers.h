@@ -12,15 +12,22 @@ bool findGemmAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
 	auto _k = placeholder(ctx);
 	auto _ii = placeholder(ctx);
 	auto _jj = placeholder(ctx);
-	auto _A = arrayPlaceholder();
-	auto _B = arrayPlaceholder();
-	auto _C = arrayPlaceholder();
-	auto localReads = allOf(access(_A, _i, _j), access(_B, _i, _k), access(_C, _k, _j));
-	auto localWrites = allOf(access(_A, _ii, _jj));
+	auto localReads = allOf(access(_i, _j), access(_i, _k), access(_k, _j));
+	auto localWrites = allOf(access(_ii, _jj));
 	auto matchReads = match(reads, localReads);
 	auto matchWrites = match(writes, localWrites);
 
-	return ((matchReads.size() == 1u) && (matchWrites.size() == 1u));
+	if ((matchReads.size() == 1u) && (matchWrites.size() == 1u)) {
+		int i = matchReads[0][_i].payload().inputDimPos_;
+		int j = matchReads[0][_j].payload().inputDimPos_;
+		int k = matchReads[0][_k].payload().inputDimPos_;
+		int ii = matchWrites[0][_ii].payload().inputDimPos_;
+		int jj = matchWrites[0][_jj].payload().inputDimPos_;
+		bool isMatch = ((ii == 0) && (jj == 1) && (ii == i) && (jj == j) && (k == 2)); 
+		return isMatch;
+	} else { 
+		return false; 
+	}
 }
 
 
@@ -83,16 +90,18 @@ bool findTransposeGemmAccess(isl::ctx ctx, isl::union_map reads, isl::union_map 
 
 
 	// Vérifier si ca marche vraiment.
-	auto localReads = allOf(access(A, _i, _j), 
-													access(B, _i, _k), 
-													access(C, _j, _k), 
-													access(B, _j, _i));
+	auto localReads = allOf(access(_i, _j), 
+													access(_i, _k), 
+													access(_j, _k));
 	//auto localWrites = allOf(access(A, _i, _j), access(B, _it, _jt));
 
 	auto matchReads = match(reads, localReads);
 	
 
+	
+
 	for (const auto &mr : matchReads) {
+
 		std::cout << mr[_i].payload().inputDimPos_ << std::endl;
 		std::cout << "\n" << std::endl;
 		std::cout << mr[_i].candidateSpaces().size() << std::endl;
