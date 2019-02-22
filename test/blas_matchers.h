@@ -122,7 +122,28 @@ bool findAndReplaceGemm(isl::ctx ctx, Scop scop) {
 bool findDotProduct(isl::ctx ctx, Scop scop) {
 	isl::union_map reads = scop.reads;
 	isl::union_map writes = scop.mustWrites;
-	findDotProductAccess(ctx, reads, writes);
+	bool test = findDotProductAccess(ctx, reads, writes);
+}
+
+bool findAxpy(isl::ctx ctx, Scop scop) {
+	isl::schedule_node root = scop.schedule.get_root();
+	isl::schedule_node node;
+	bool test = findAxpyTree(root, &node); 
+	if (test == true) {
+		std::cout << "matches" << std::endl;
+	} else {
+		std::cout << "no match" << std::endl;
+	}
+}
+
+bool findDotProduct(isl::ctx ctx, Scop scop) {
+	isl::schedule_node root = scop.schedule.get_root();
+	isl::schedule_node node;
+	if (findDotProductTree(root, &node) == true) {
+		std::cout << "matches" << std::endl;
+	}	else {
+		std::cout << "no match" << std::endl;
+	}
 }
 } // namespace blasMathers
 

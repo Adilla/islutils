@@ -6,6 +6,7 @@ double alpha;
 void axpy() {
 
 #pragma scop
+
 for (int i = 0; i < 1024; i++)
   y[i] += alpha * x[i];
 
