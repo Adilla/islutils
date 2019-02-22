@@ -117,6 +117,13 @@ bool findAndReplaceGemm(isl::ctx ctx, Scop scop) {
 	return foundGemm;
 }
 
+
+
+bool findDotProduct(isl::ctx ctx, Scop scop) {
+	isl::union_map reads = scop.reads;
+	isl::union_map writes = scop.mustWrites;
+	findDotProductAccess(ctx, reads, writes);
+}
 } // namespace blasMathers
 
 #endif

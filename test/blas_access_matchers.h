@@ -153,5 +153,22 @@ bool findAxpyAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
 		return false;
 	}
 }
+
+bool findDotProductAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
+	auto _i = placeholder(ctx);
+	auto localReads = allOf(access(_i));
+	auto matchReads = match(reads, localReads);
+	// Since the fact that there is a match means that there are only
+	// two patterns that follow this access same specification, then
+	// the condition on have 2 reads is enough to ensure that it is 
+	// a dotProduct. However, I don't know how to ensure that we are indeed
+	// in the presence of a reduction on a scalar variable, so I guess this 
+	// test is incomplete
+	if ((matchReads.size() == 2u)) {
+		return true;
+	} else {
+		return false;
+	}
+}
 } // namespace blasMatchers
 #endif
