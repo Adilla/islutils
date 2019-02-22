@@ -170,5 +170,31 @@ bool findDotProductAccess(isl::ctx ctx, isl::union_map reads, isl::union_map wri
 		return false;
 	}
 }
+
+bool findTransposeAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
+	auto _i = placeholder(ctx);
+	auto _j = placeholder(ctx);
+	auto _ii = placeholder(ctx);
+	auto _jj = placeholder(ctx);
+	auto localReads = allOf(access(_i, _j));
+	auto localWrites = allOf(access(_ii, _jj));
+
+	auto matchReads = match(reads, localReads);
+	auto matchWrites = match(writes, localWrites);
+
+	if ((matchReads.size() == 1u) && (matchWrites.size() == 1u)) {
+		// This far, at least we ensure that there is only one read 
+		// and one write. Then we need to make sure that the correspond
+		// to a transposition
+		int i1 = matchReads[0][_i].payload().inputDimPos_;
+		int j1 = matchReads[0][_j].payload().inputDimPos_;
+		auto i2 = matchWrites[0][_ii].payload().inputDimPos_;
+		auto j2 = matchWrites[0][_jj].payload().inputDimPos_;
+		bool isMatch = ((i1 == j2) && (i2 == j1));
+		return isMatch;
+	} else {
+		return false;
+	}
+}
 } // namespace blasMatchers
 #endif
