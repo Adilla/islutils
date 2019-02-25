@@ -179,7 +179,7 @@ searchRootNodeMatchingDomain(isl::schedule_node node, isl::union_set domain) {
 		// for which node.get_domain() is not just a 
 		// subset, but is_equal to domain.
 		auto thisChild = node.get_child(i);
-		//thisChild.dump();
+		thisChild.dump();
 		if (thisChild.get_domain().is_equal(domain)) {
 			return thisChild;
 		} else {
@@ -233,14 +233,17 @@ findAndReplaceTransposeGemm(isl::ctx ctx,
 		auto scheddom = scop.schedule.get_domain();
 	
 		if (accessdom.is_subset(scheddom)) {
+
 			isl::schedule_node root = scop.schedule.get_root();
 			auto node = searchRootNodeMatchingDomain(root, accessdom);
+		node.dump();	
 			isl::schedule_node *_node;
 			// Of course, the tree should be the same as 
 			// standard Gemm.
 			auto dependences = computeAllDependences(scop);
+	
 			node = mergeIfTilable(node, dependences);
-			node.dump();
+		//	node.dump();
 			if (findGemmTree(node, _node) == true) {
 				std::cout << "Full transpose gemm kernel" << std::endl;
 			}
