@@ -15,9 +15,15 @@ using namespace blasTreeMatchers;
 
 namespace blasMatchers {
 
+using UmapPair = std::map<int, isl::union_map>;
+using Accesses = std::vector<std::pair<isl::union_map, isl::union_map>>;
+
+bool findAndReplaceGemm(isl::ctx, Scop);
+std::vector<std::pair<isl::union_map, isl::union_map>> associateRW(UmapPair, UmapPair);
 
 std::map<int, isl::union_map> 
-restructureUnionMap(isl::ctx ctx, isl::union_map umap) {
+restructureUnionMap(isl::ctx ctx, 
+										isl::union_map umap) {	
 	std::map<int, isl::union_map> rumap;
 	// I am not sure if this is a necessary step 
 	// but we'll do it this way for now.
@@ -40,68 +46,92 @@ restructureUnionMap(isl::ctx ctx, isl::union_map umap) {
 }
 
 
-int separateScops(isl::ctx ctx, Scop scop) {
-	isl::union_map reads = scop.reads.curry();	
-	isl::union_map writes = scop.mustWrites.curry();
 
-	//reads.dump();
+Accesses
+restructureScop(isl::ctx ctx,	
+								isl::union_map reads, 
+								isl::union_map writes) {
 
-	auto mreads = restructureUnionMap(ctx, reads);
-	auto mwrites = restructureUnionMap(ctx, writes);
+	return associateRW(restructureUnionMap(ctx, reads),
+										 restructureUnionMap(ctx, writes));
 
-	// isl::map_list wList = writes.get_map_list();
-	// isl::map_list rList = reads.get_map_list();
+}
 
-	// std::map<int, isl::union_map> sReads, sWrites;
+// Associate reads and writes from same scop
+Accesses
+associateRW(UmapPair reads, UmapPair writes) {
+	Accesses rw;
 
-	// auto bRead = isl::union_map(ctx, rList.get_at(0).to_str());
-	// auto bWrite = isl::union_map(ctx, wList.get_at(0).to_str());
+	if (reads.size() != writes.size()) {
+		std::cout << "error" << std::endl;
+	} else {
+		for (auto w : writes) {
+			for (auto r : reads) {
+				if (w.second.domain().is_equal(r.second.domain())) {
+					rw.push_back(std::make_pair(w.second, r.second));
+				}
+			}
+		}
+	}
+	return rw;
+}
 
-	// sReads[0] = bRead;
-	// sWrites[0] = bWrite;
-	// int count = 0;
+void findPatterns(isl::ctx ctx, Scop scop) {
+	isl::union_map _reads = scop.reads.curry();
+	isl::union_map _writes = scop.mustWrites.curry();
 
-	// for (int i = 1; i < rList.size(); ++i) {
-	// 	auto thisRead = rList.get_map(i);
-	// 	if (sReads[count].domain().is_equal(thisRead.domain())) {
-	// 		sReads[count] = sReads[count].add_map(thisRead);
- 	// 	} else {
-	// 		 count += 1;
-	// 		 sReads[count] = isl::union_map(ctx, thisRead.to_str());
+	auto accesses = restructureScop(ctx, _reads, _writes);
+	// Accesses accesses = restructureScop(ctx, _reads, _writes);
+
+	// auto reads = accesses.first;
+	// auto writes = accesses.second;
+
+
+	// for (auto it = reads.begin(); it != reads.end(); ++it) {
+	// 	auto thisRead = it
+	// }
+
+	// auto test = findAndReplaceGemm(ctx, scop, accesses);
+}
+
+
+bool findAndReplaceGemm(isl::ctx ctx, Scop scop, Accesses accesses) {
+		//scop.dump();
+			std::cout << "test" << std::endl;
+			scop.schedule.dump();
+	// auto dependences = computeAllDependences(scop);
+	// scop.schedule = mergeIfTilable(scop.schedule.get_root(), dependences).get_schedule();
+
+	// isl::schedule_node root = scop.schedule.get_root();
+	// isl::schedule_node node;
+
+	// bool foundGemm = false;
+	// std::cout << foundGemm << std::endl;
+
+	// root.dump();
+	// if (findGemmTree(root, &node) == true) {
+
+	// 	isl::union_map reads = scop.reads;
+	// 	isl::union_map writes = scop.mustWrites;
+
+	// 	//foundGemm = true;
+	// 	if (findGemmAccess(ctx, reads, writes) == true) {
+	// 		foundGemm = true;
 	// 	}
 	// }
-
-	std::cout << "Reads" << std::endl;
-	for (auto map : mreads) {
-		map.second.dump();
-		std::cout << "\n" << std::endl;
- 	}
-
-
-	std::cout << "Writes" << std::endl;
-	for (auto map : mwrites) {
-		map.second.dump();
-		std::cout << "\n" << std::endl;
-	}
-
-
-
-
-	// std::cout << rList.size() << std::endl;
-
-	// if (rList.size() < 1) {
-	// 	std::cout << "return single map" << std::endl;
-	// } else {
-	// 	std::cout << "Do the separation" << std::endl;
+	// if (foundGemm == true) {
+	// 	std::cout << "It matches" << std::endl;
+	// }
+	// else {
+	// 	std::cout << "It doesn't match" << std::endl;
 	// }
 
-	// if (rList.size() < 1) {
-	// 	std::cout << "bb" << std::endl;
-	// } else {
-	// 	std::cout << "cc" << std::endl;
-	// }
-	return 0;
+	// std::cout << foundGemm << std::endl;
+
+	return true;
 }
+
+
 
 bool findBatchedGemm(isl::ctx ctx, Scop scop) {
 	auto dependences = computeAllDependences(scop);
@@ -177,38 +207,6 @@ bool findTransposedGemm(isl::ctx ctx, Scop scop) {
 	return true;
 }
 
-bool findAndReplaceGemm(isl::ctx ctx, Scop scop) {
-	auto dependences = computeAllDependences(scop);
-	scop.schedule = mergeIfTilable(scop.schedule.get_root(), dependences).get_schedule();
-
-	isl::schedule_node root = scop.schedule.get_root();
-	isl::schedule_node node;
-
-	bool foundGemm = false;
-	std::cout << foundGemm << std::endl;
-
-	root.dump();
-	if (findGemmTree(root, &node) == true) {
-
-		isl::union_map reads = scop.reads;
-		isl::union_map writes = scop.mustWrites;
-
-		//foundGemm = true;
-		if (findGemmAccess(ctx, reads, writes) == true) {
-			foundGemm = true;
-		}
-	}
-	if (foundGemm == true) {
-		std::cout << "It matches" << std::endl;
-	}
-	else {
-		std::cout << "It doesn't match" << std::endl;
-	}
-
-	std::cout << foundGemm << std::endl;
-
-	return foundGemm;
-}
 
 
 bool findAxpy(isl::ctx ctx, Scop scop) {
