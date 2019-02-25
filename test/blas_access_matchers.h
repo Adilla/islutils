@@ -26,10 +26,8 @@ bool findGemmAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
 		bool isMatch = ((ii == 0) && (jj == 1) && 
 										(ii == i) && (jj == j) && 
 										(k == 2)); 
-	
 		return isMatch;
 	} else { 
-		std::cout << "What the ??" << std::endl;
 		return false; 
 	}
 }

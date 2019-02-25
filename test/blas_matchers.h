@@ -26,7 +26,7 @@ const int nbKernels = 3;
 using UmapPair = std::map<int, isl::union_map>;
 using Accesses = std::vector<std::pair<isl::union_map, isl::union_map>>;
 
-bool findAndReplaceGemm(isl::ctx, Scop, Accesses);
+bool findAndReplaceGemm(isl::ctx, Scop, isl::union_map, isl::union_map);
 std::vector<std::pair<isl::union_map, isl::union_map>> associateRW(UmapPair, UmapPair);
 
 std::map<int, isl::union_map> 
@@ -105,60 +105,28 @@ void findPatterns(isl::ctx ctx, Scop scop) {
 
 		for (int i = 0; i < nbKernels; ++i) {
 			Kernel k = (Kernel)i;
-			// switch(k) {
-			// 	case Gemm : {
-			// 		auto isGemm = findGemmAccess(ctx, reads, writes);
-			// 		if (isGemm == true) {
-			// 			std::cout << "Found Gemm" << std::endl;
-			// 		} else {
-			// 			std::cout << "No Gemm" << std::endl;
-			// 		}
-			// 	};
-			// 	break;
-			// 	case Transpose : {
-			// 		auto isTranspose = findTransposeAccess(ctx, reads, writes);
-			// 		if (isTranspose == true) {
-			// 			std::cout << "Found transpose" << std::endl;
-			// 		}	else {
-			// 			std::cout << "No transpose" << std::endl;
-			// 		}
-			// 	};
-			// 	default : std::cout << "No Kernel found" << std::endl;
-			// }
-			std::cout << "Reads" << std::endl;
-			reads.dump();
-			std::cout << "Writes" << std::endl;
-			writes.dump();
-			std::cout << "\n" << std::endl;
-			
-
-			if (k == Gemm) {
-				auto isGemm = findGemmAccess(ctx, reads, writes);
-				if (isGemm == true) {
-					std::cout << "Found Gemm" << std::endl;
-				} else {
-					std::cout << "No Gemm" << std::endl;
+			switch(k) {
+				case Gemm : 
+					std::cout << "Searching for Gemm" << std::endl;
+					if (findAndReplaceGemm(ctx, scop, reads, writes) == true)
+						std::cout << "Found Gemm" << std::endl;
+					break;
+				case Transpose : { 
+					std::cout << "Searching for Transpose" << std::endl;
+					auto isTranspose = findTransposeAccess(ctx, reads, writes);
+					if (isTranspose == true) 
+						std::cout << "Found transpose" << std::endl;
 				}
-			}
-			if (k == Transpose) {
-				auto isTranspose = findTransposeAccess(ctx, reads, writes);
-				if (isTranspose == true) {
-					std::cout << "Found transpose" << std::endl;
-				}	else {
-					std::cout << "No transpose" << std::endl;
+				break;
+				case TransposeGemm : {
+ 					std::cout << "Searching for TransposeGemm " << std::endl;
+					auto isTransposeGemm = findTransposeGemmAccess(ctx, reads, writes);
+					if (isTransposeGemm == true) 
+						std::cout << "Found TransposeGemm" << std::endl;
 				}
+				break;
 			}
-			if (k == TransposeGemm) {
-				auto isGemm = findTransposeGemmAccess(ctx, reads, writes);
-				if (isGemm == true) {
-					std::cout << "Found transpose Gemm" << std::endl;
-				} else {
-					std::cout << "No transpose Gemm" << std::endl;
-				}
-			}
-			std::cout << "\n" <<std::endl;
 		}
-
 	}
 
 	// Accesses accesses = restructureScop(ctx, _reads, _writes);
@@ -175,10 +143,19 @@ void findPatterns(isl::ctx ctx, Scop scop) {
 }
 
 
-bool findAndReplaceGemm(isl::ctx ctx, Scop scop, Accesses accesses) {
-		//scop.dump();
-			std::cout << "test" << std::endl;
-			scop.schedule.dump();
+bool 
+findAndReplaceGemm(isl::ctx ctx, 
+									 Scop scop, 
+									 isl::union_map reads, 
+									 isl::union_map writes) {
+	auto isGemm = findGemmAccess(ctx, reads, writes);
+	if (isGemm == true) {
+		std::cout << "Found Gemm" << std::endl;
+
+	} else {
+		return false;
+	}
+	
 	// auto dependences = computeAllDependences(scop);
 	// scop.schedule = mergeIfTilable(scop.schedule.get_root(), dependences).get_schedule();
 
@@ -208,7 +185,6 @@ bool findAndReplaceGemm(isl::ctx ctx, Scop scop, Accesses accesses) {
 
 	// std::cout << foundGemm << std::endl;
 
-	return true;
 }
 
 
