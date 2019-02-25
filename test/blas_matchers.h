@@ -15,10 +15,18 @@ using namespace blasTreeMatchers;
 
 namespace blasMatchers {
 
+enum Kernel {
+	Gemm,
+	Transpose,
+	TransposeGemm
+};
+
+const int nbKernels = 3;
+
 using UmapPair = std::map<int, isl::union_map>;
 using Accesses = std::vector<std::pair<isl::union_map, isl::union_map>>;
 
-bool findAndReplaceGemm(isl::ctx, Scop);
+bool findAndReplaceGemm(isl::ctx, Scop, Accesses);
 std::vector<std::pair<isl::union_map, isl::union_map>> associateRW(UmapPair, UmapPair);
 
 std::map<int, isl::union_map> 
@@ -81,6 +89,78 @@ void findPatterns(isl::ctx ctx, Scop scop) {
 	isl::union_map _writes = scop.mustWrites.curry();
 
 	auto accesses = restructureScop(ctx, _reads, _writes);
+
+	// The idea is as follows.
+	// We first go through pair of <read, write> (i.e accesses, 
+	// that represent a single statement) to find if it corresponds
+	// to a known BLAS access pattern. If true, then confirm that 
+	// the schedule tree enclosing the statement does match the 
+	// hypothetical BLAS. If both conditions are met for a given 
+	// BLAS pattern, then return the schedule tree node that 
+	// should be transformed into a runtime call.
+
+	for (auto acc : accesses) {
+		auto writes = acc.first;
+		auto reads = acc.second;
+
+		for (int i = 0; i < nbKernels; ++i) {
+			Kernel k = (Kernel)i;
+			// switch(k) {
+			// 	case Gemm : {
+			// 		auto isGemm = findGemmAccess(ctx, reads, writes);
+			// 		if (isGemm == true) {
+			// 			std::cout << "Found Gemm" << std::endl;
+			// 		} else {
+			// 			std::cout << "No Gemm" << std::endl;
+			// 		}
+			// 	};
+			// 	break;
+			// 	case Transpose : {
+			// 		auto isTranspose = findTransposeAccess(ctx, reads, writes);
+			// 		if (isTranspose == true) {
+			// 			std::cout << "Found transpose" << std::endl;
+			// 		}	else {
+			// 			std::cout << "No transpose" << std::endl;
+			// 		}
+			// 	};
+			// 	default : std::cout << "No Kernel found" << std::endl;
+			// }
+			std::cout << "Reads" << std::endl;
+			reads.dump();
+			std::cout << "Writes" << std::endl;
+			writes.dump();
+			std::cout << "\n" << std::endl;
+			
+
+			if (k == Gemm) {
+				auto isGemm = findGemmAccess(ctx, reads, writes);
+				if (isGemm == true) {
+					std::cout << "Found Gemm" << std::endl;
+				} else {
+					std::cout << "No Gemm" << std::endl;
+				}
+			}
+			if (k == Transpose) {
+				auto isTranspose = findTransposeAccess(ctx, reads, writes);
+				if (isTranspose == true) {
+					std::cout << "Found transpose" << std::endl;
+				}	else {
+					std::cout << "No transpose" << std::endl;
+				}
+			}
+			if (k == TransposeGemm) {
+				auto isGemm = findTransposeGemmAccess(ctx, reads, writes);
+				if (isGemm == true) {
+					std::cout << "Found transpose Gemm" << std::endl;
+				} else {
+					std::cout << "No transpose Gemm" << std::endl;
+				}
+			}
+			std::cout << "\n" <<std::endl;
+		}
+
+	}
+
 	// Accesses accesses = restructureScop(ctx, _reads, _writes);
 
 	// auto reads = accesses.first;
