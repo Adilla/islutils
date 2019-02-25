@@ -6,7 +6,6 @@ using namespace matchers;
 
 namespace blasTreeMatchers {
 
-
 bool find1DTree(isl::schedule_node root) {
 	// Ensure if u need to check if strided or not.
 	auto matcher = band(
@@ -31,16 +30,15 @@ bool findNDPermutableBand(isl::schedule_node root, isl::schedule_node *node, int
 }
 
 bool findGemmTree(isl::schedule_node root, isl::schedule_node *node) {
-	return findNDPermutableBand(root, node, 3);
+	return findNDPermutableBand(root, node, 3u);
 }
 
-
 bool findBatchedGemmTree(isl::schedule_node root, isl::schedule_node *node) {
-	return findNDPermutableBand(root, node, 4);
+	return findNDPermutableBand(root, node, 4u);
 }
 
 bool findTransposeTree(isl::schedule_node root, isl::schedule_node *node) {
-	return findNDPermutableBand(root, node, 2);
+	return findNDPermutableBand(root, node, 2u);
 }
 
 bool findAxpyTree(isl::schedule_node root, isl::schedule_node *node) {

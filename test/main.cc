@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
     //auto gemm = blasMatchers::findAndReplaceGemm(ctx, scop);
 
 
-    auto bgemm = blasMatchers::findDotProduct(ctx, scop);
+    auto bgemm = blasMatchers::separateScops(ctx, scop);
     std::cout << inputFile << std::endl;
     // Create a collection of matchers per type of kernel.
     // i.e. a matcher for gemm, tgemm, batchgemm, axpy, whatver. matrix-vector product, dot product, axpy.
