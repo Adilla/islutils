@@ -11,8 +11,15 @@ bool find1DTree(isl::schedule_node root) {
 	auto matcher = band(
 									leaf()
 								);
-	return ScheduleNodeMatcher::isMatching(matcher, root.child(0));
+	return ScheduleNodeMatcher::isMatching(matcher, root);
 } 
+
+bool find2DTree(isl::schedule_node root) {
+	auto matcher = band(
+									band(
+										leaf()));									
+	return ScheduleNodeMatcher::isMatching(matcher, root);
+}
 
 bool findNDPermutableBand(isl::schedule_node root, isl::schedule_node *node, int nbDim) {
 	// For the moment reusing what is already implemented in test_transformer.cc
@@ -26,7 +33,7 @@ bool findNDPermutableBand(isl::schedule_node root, isl::schedule_node *node, int
 					return true;
 				}
 			}, leaf());
-	return ScheduleNodeMatcher::isMatching(matcher, root.child(0));
+	return ScheduleNodeMatcher::isMatching(matcher, root);
 }
 
 bool findGemmTree(isl::schedule_node root, isl::schedule_node *node) {
@@ -38,7 +45,8 @@ bool findBatchedGemmTree(isl::schedule_node root, isl::schedule_node *node) {
 }
 
 bool findTransposeTree(isl::schedule_node root, isl::schedule_node *node) {
-	return findNDPermutableBand(root, node, 2u);
+	// Must check if this is the proper condition.
+	return find2DTree(root);
 }
 
 bool findAxpyTree(isl::schedule_node root, isl::schedule_node *node) {

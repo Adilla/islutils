@@ -62,6 +62,7 @@ isl::schedule_node mergeIfTilable(isl::schedule_node node,
   isl::schedule_node parent, child, grandchild;
 
   auto canMergeCaptureChild = [&child, dependences](isl::schedule_node node) {
+   // node.dump();
     if (canMerge(node.parent(), dependences)) {
       child = node;
       return true;

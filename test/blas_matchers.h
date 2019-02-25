@@ -28,6 +28,7 @@ using Accesses = std::vector<std::pair<isl::union_map, isl::union_map>>;
 
 bool findAndReplaceGemm(isl::ctx, Scop, isl::union_map, isl::union_map);
 bool findAndReplaceTranspose(isl::ctx, Scop, isl::union_map, isl::union_map);
+bool findAndReplaceTransposeGemm(isl::ctx, Scop, isl::union_map, isl::union_map);
 std::vector<std::pair<isl::union_map, isl::union_map>> associateRW(UmapPair, UmapPair);
 
 std::map<int, isl::union_map>
@@ -120,7 +121,7 @@ void findPatterns(isl::ctx ctx, Scop scop) {
 				break;
 				case TransposeGemm : {
  					//std::cout << "Searching for TransposeGemm " << std::endl;
-					auto isTransposeGemm = findTransposeGemmAccess(ctx, reads, writes);
+					auto isTransposeGemm = findAndReplaceTransposeGemm(ctx, scop, reads, writes);
 					if (isTransposeGemm == true)
 						std::cout << "Found TransposeGemm" << std::endl;
 				}
@@ -180,7 +181,7 @@ searchRootNodeMatchingDomain(isl::schedule_node node, isl::union_set domain) {
 		auto thisChild = node.get_child(i);
 		//thisChild.dump();
 		if (thisChild.get_domain().is_equal(domain)) {
-			return thisChild.parent();
+			return thisChild;
 		} else {
 				if (thisChild.has_children() == true) {
 					return searchRootNodeMatchingDomain(thisChild, domain);
@@ -196,35 +197,55 @@ findAndReplaceTranspose(isl::ctx ctx,
 									 isl::union_map writes) {
 	auto isTranspose = findTransposeAccess(ctx, reads, writes);
 	if (isTranspose == true) {
-		std::cout << "Found Transpose" << std::endl;
-
+		//std::cout << "Found Transpose" << std::endl;
 		// At this point it doesn't matter whether we use the
 		// domain of reads or writes, it's the same
 		auto accessdom = reads.domain();
 		auto scheddom = scop.schedule.get_domain();
-
-
+	
 		if (accessdom.is_subset(scheddom)) {
-			// Now lets search for the root of the tree that
-			// has as domain accessdom
-
 			isl::schedule_node root = scop.schedule.get_root();
 			auto node = searchRootNodeMatchingDomain(root, accessdom);
-
-			std::cout << "res" << std::endl;
-			node.dump();
-
-
-			auto dependences = computeAllDependences(scop);
-			auto test = mergeIfTilable(node, dependences).get_schedule();
-
-			test.dump();
 			isl::schedule_node *_node;
 			if (findTransposeTree(node, _node) == true) {
-				std::cout << "This is indeed a transpose kernel" << std::endl;
+				std::cout << "Full transpose kernel" << std::endl;
 			}
 		}
-	//test3.dump();
+	} else {
+		return false;
+	}
+}
+
+
+
+bool 
+findAndReplaceTransposeGemm(isl::ctx ctx,
+									 Scop scop,
+									 isl::union_map reads,
+									 isl::union_map writes) {
+	auto isTransposeGemm = findTransposeGemmAccess(ctx, reads, writes);
+	if (isTransposeGemm == true) {
+		std::cout << "Found transpose gemm access" << std::endl;
+		//std::cout << "Found Transpose" << std::endl;
+		// At this point it doesn't matter whether we use the
+		// domain of reads or writes, it's the same
+		auto accessdom = reads.domain();
+		auto scheddom = scop.schedule.get_domain();
+	
+		if (accessdom.is_subset(scheddom)) {
+			isl::schedule_node root = scop.schedule.get_root();
+			auto node = searchRootNodeMatchingDomain(root, accessdom);
+			isl::schedule_node *_node;
+			// Of course, the tree should be the same as 
+			// standard Gemm.
+			auto dependences = computeAllDependences(scop);
+			node = mergeIfTilable(node, dependences);
+			node.dump();
+			if (findGemmTree(node, _node) == true) {
+				std::cout << "Full transpose gemm kernel" << std::endl;
+			}
+			else { std::cout << "No gemm tree" << std::endl;}
+		}
 	} else {
 		return false;
 	}
@@ -267,43 +288,6 @@ bool findBatchedGemm(isl::ctx ctx, Scop scop) {
 
 	std::cout << foundGemm << std::endl;
 	return foundGemm;
-}
-
-
-
-bool findTransposedGemm(isl::ctx ctx, Scop scop) {
-	isl::union_map reads = scop.reads.curry();
-	isl::union_map writes = scop.mustWrites.curry();
-
-	// std::cout <<	reads.get_map_list().size() << std::endl;
-
-
-	// std::vector<isl::union_map> allreads;
-
-	// auto mapList = reads.get_map_list();
-	// int max = mapList.size();
-
-	// if (max > 0) {
-	// 	auto firstDomain = mapList.get_map(0).domain();
-
-	// 	int i;
-	// 	// Iterate over list to identify different domain and
-	// 	// split the list into lists of maps.
-	// 	for (i = 0; i < max; ++i) {
-	// 		auto thisMap = mapList.get_map(i);
-	// 		auto test = reads.get_map_list().get_map(i);
-
-	// }
-
-
-	auto res = findTransposeGemmAccess(ctx, reads, writes);
-
-	if (res == true) {
-		std::cout << "found transposed access" << std::endl;
-	} else {
-		std::cout << "did not find" << std::endl;
-	}
-	return true;
 }
 
 

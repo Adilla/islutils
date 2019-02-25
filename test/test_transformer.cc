@@ -222,6 +222,10 @@ static bool canMerge(isl::schedule_node parentBand,
   auto positiveOrthant =
       isl::set(isl::basic_set::positive_orthant(scheduleSpace));
   dependences = filterOutCarriedDependences(dependences, parentBand);
+  std::cout << "meeeh" << std::endl;
+  positiveOrthant.dump();
+  dependences.apply_domain(schedule).apply_range(schedule).dump();
+
   return dependences.apply_domain(schedule)
       .apply_range(schedule)
       .deltas()
@@ -285,6 +289,7 @@ isl::schedule_node mergeIfTilable(isl::schedule_node node,
   isl::schedule_node parent, child, grandchild;
 
   auto canMergeCaptureChild = [&child, dependences](isl::schedule_node node) {
+    node.dump();
     if (canMerge(node.parent(), dependences)) {
       child = node;
       return true;
@@ -770,17 +775,17 @@ TEST(Transformer, DISABLED_MatchGemm) {
  
 // }
 
-TEST(Transformer, DISABLED_MatchMatmul) {
+TEST(Transformer, MatchMatmul) {
 
   auto ctx = ScopedCtx(pet::allocCtx());
-  auto petScop = pet::Scop::parseFile(ctx, "inputs/1mmWithoutInitStmt.c");
+  auto petScop = pet::Scop::parseFile(ctx, "inputs/tmm.c");
   auto scop = petScop.getScop();
 
   auto dependences = computeAllDependences(scop);
   scop.schedule =
       mergeIfTilable(scop.schedule.get_root(), dependences).get_schedule();
 
-
+  scop.schedule.dump();
   isl::schedule_node root = scop.schedule.get_root();
   //root.dump();
 
