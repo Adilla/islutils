@@ -174,19 +174,22 @@ findAndReplaceGemm(isl::ctx ctx,
 }
 
 
-isl::schedule_node
+void
 searchRootNodeMatchingDomain(isl::schedule_node node, 
-														 isl::union_set domain) {
-	isl::schedule_node res;
-	if (node.get_domain().is_equal(domain)) {
-		res = node;
-	} else {
-	for (int i = 0; i < node.n_children(); ++i) {
-			res = searchRootNodeMatchingDomain(node.get_child(i), domain);
+														 isl::union_set domain,
+														 isl::schedule_node &subnode) {
+	
+		if (node.get_domain().is_equal(domain)) 
+			subnode = node;
+		else {
+			for (int i = 0; i < node.n_children(); ++i) {
+				//return searchRootNodeMatchingDomain(node.get_child(i), domain);
+				//node.get_child(i).dump();
+				searchRootNodeMatchingDomain(node.get_child(i), domain, subnode);
+			}
 		}
 	}
-	return res;
-}
+
 
 
 bool
@@ -205,11 +208,14 @@ findAndReplaceTranspose(isl::ctx ctx,
 		if (accessdom.is_subset(scheddom)) {
 			isl::schedule_node root = scop.schedule.get_root();
 			//root.dump();
-			auto node = searchRootNodeMatchingDomain(root.get_child(0), accessdom);
-			isl::schedule_node *_node;
-			if (findTransposeTree(node, _node) == true) {
-				std::cout << "Full transpose kernel" << std::endl;
-			}
+		//	isl::schedule_node *_node;
+			isl::schedule_node subnode;
+			searchRootNodeMatchingDomain(root, accessdom, subnode);
+			subnode.dump();
+
+			// if (findTransposeTree(node, _node) == true) {
+			// 	std::cout << "Full transpose kernel" << std::endl;
+			// }
 		}
 	} else {
 		return false;
@@ -226,34 +232,31 @@ findAndReplaceTransposeGemm(isl::ctx ctx,
 	auto isTransposeGemm = findTransposeGemmAccess(ctx, reads, writes);
 	if (isTransposeGemm == true) {
 		std::cout << "Found transpose gemm access" << std::endl;
-		//std::cout << "Found Transpose" << std::endl;
 		// At this point it doesn't matter whether we use the
 		// domain of reads or writes, it's the same
 		auto accessdom = reads.domain();
 		auto scheddom = scop.schedule.get_domain();
 
 		if (accessdom.is_subset(scheddom)) {
-	
 			isl::schedule_node root = scop.schedule.get_root();
-			//accessdom.dump();
-			//root.dump();
-			auto node = searchRootNodeMatchingDomain(root, accessdom);
-			// isl::schedule_node *_node;
-			// Of course, the tree should be the same as 
-			// standard Gemm.
+			isl::schedule_node subnode;
+			searchRootNodeMatchingDomain(root, accessdom, subnode);
+			subnode.dump();
+		// 	isl::schedule_node *_node;
+		// 	// Of course, the tree should be the same as 
+		// 	// standard Gemm.
 		// 	auto dependences = computeAllDependences(scop);
 		// 	node = mergeIfTilable(node, dependences);
-		// //	node.dump();
 		// 	if (findGemmTree(node, _node) == true) {
 		// 		std::cout << "Full transpose gemm kernel" << std::endl;
-		// 		node.dump();
 		// 	}
 		// 	else { std::cout << "No gemm tree" << std::endl;}
-		}
+		 }
 	} else {
 		return false;
 	}
 }
+									 
 
 
 
