@@ -173,23 +173,20 @@ findAndReplaceGemm(isl::ctx ctx,
 	}
 }
 
-
+// If this function is called, then &subnode will necessary be 
+// updated with a node because we ensured that the domain was 
+// indeed a subset of the Scop's domain.
 void
 searchRootNodeMatchingDomain(isl::schedule_node node, 
 														 isl::union_set domain,
 														 isl::schedule_node &subnode) {
-	
 		if (node.get_domain().is_equal(domain)) 
 			subnode = node;
 		else {
-			for (int i = 0; i < node.n_children(); ++i) {
-				//return searchRootNodeMatchingDomain(node.get_child(i), domain);
-				//node.get_child(i).dump();
+			for (int i = 0; i < node.n_children(); ++i) 
 				searchRootNodeMatchingDomain(node.get_child(i), domain, subnode);
-			}
 		}
-	}
-
+}
 
 
 bool
@@ -208,14 +205,14 @@ findAndReplaceTranspose(isl::ctx ctx,
 		if (accessdom.is_subset(scheddom)) {
 			isl::schedule_node root = scop.schedule.get_root();
 			//root.dump();
-		//	isl::schedule_node *_node;
+			isl::schedule_node *_node;
 			isl::schedule_node subnode;
 			searchRootNodeMatchingDomain(root, accessdom, subnode);
 			subnode.dump();
 
-			// if (findTransposeTree(node, _node) == true) {
-			// 	std::cout << "Full transpose kernel" << std::endl;
-			// }
+			if (findTransposeTree(subnode, _node) == true) {
+				std::cout << "Full transpose kernel" << std::endl;
+			}
 		}
 	} else {
 		return false;
@@ -242,15 +239,15 @@ findAndReplaceTransposeGemm(isl::ctx ctx,
 			isl::schedule_node subnode;
 			searchRootNodeMatchingDomain(root, accessdom, subnode);
 			subnode.dump();
-		// 	isl::schedule_node *_node;
-		// 	// Of course, the tree should be the same as 
-		// 	// standard Gemm.
-		// 	auto dependences = computeAllDependences(scop);
-		// 	node = mergeIfTilable(node, dependences);
-		// 	if (findGemmTree(node, _node) == true) {
-		// 		std::cout << "Full transpose gemm kernel" << std::endl;
-		// 	}
-		// 	else { std::cout << "No gemm tree" << std::endl;}
+			isl::schedule_node *_node;
+			// Of course, the tree should be the same as 
+			// standard Gemm.
+			auto dependences = computeAllDependences(scop);
+			subnode = mergeIfTilable(subnode, dependences);
+			if (findGemmTree(subnode, _node) == true) {
+				std::cout << "Full transpose gemm kernel" << std::endl;
+			}
+			else { std::cout << "No gemm tree" << std::endl;}
 		 }
 	} else {
 		return false;
