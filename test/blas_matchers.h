@@ -19,17 +19,24 @@ namespace blasMatchers {
 enum Kernel {
 	Gemm,
 	Transpose,
-	TransposeGemm
+	TransposeGemm,
+	BatchGemm,
+	Axpy,
+	DotProduct,
 };
 
-const int nbKernels = 3;
+const int nbKernels = 6;
 
 using UmapPair = std::map<int, isl::union_map>;
 using Accesses = std::vector<std::pair<isl::union_map, isl::union_map>>;
 
-bool findAndReplaceGemm(isl::ctx, Scop, isl::union_map, isl::union_map);
-bool findAndReplaceTranspose(isl::ctx, Scop, isl::union_map, isl::union_map);
-bool findAndReplaceTransposeGemm(isl::ctx, Scop, isl::union_map, isl::union_map);
+bool findGemm(isl::ctx, Scop, isl::union_map, isl::union_map);
+bool findTranspose(isl::ctx, Scop, isl::union_map, isl::union_map);
+bool findTransposeGemm(isl::ctx, Scop, isl::union_map, isl::union_map);
+bool findBatchGemm(isl::ctx, Scop, isl::union_map, isl::union_map);
+bool findAxpy(isl::ctx, Scop, isl::union_map, isl::union_map);
+bool findDotProduct(isl::ctx, Scop, isl::union_map, isl::union_map);
+
 Accesses associateRW(UmapPair, UmapPair);
 
 std::map<int, isl::union_map>
@@ -87,6 +94,24 @@ associateRW(UmapPair reads, UmapPair writes) {
 	return rw;
 }
 
+
+// If this function is called, then &subnode will necessary be 
+// updated with a node because we ensured that the domain was 
+// indeed a subset of the Scop's domain.
+void
+searchRootNodeMatchingDomain(isl::schedule_node node, 
+														 isl::union_set domain,
+														 isl::schedule_node &subnode) {
+	if (node.get_domain().is_equal(domain)) {
+		subnode = node;		
+	}
+	else {
+		for (int i = 0; i < node.n_children(); ++i) 
+			searchRootNodeMatchingDomain(node.get_child(i), domain, subnode);
+	}
+}
+
+
 int 
 findPatterns(isl::ctx ctx, 
 						 Scop scop) {
@@ -112,19 +137,33 @@ findPatterns(isl::ctx ctx,
 			Kernel k = (Kernel)i;
 			switch(k) {
 				case Gemm :
-					if (findAndReplaceGemm(ctx, scop, reads, writes) == true)
+					if (findGemm(ctx, scop, reads, writes) == true)
 						return Gemm;
 					break;
 				case Transpose : {
-					if (findAndReplaceTranspose(ctx, scop, reads, writes) == true)
+					if (findTranspose(ctx, scop, reads, writes) == true)
 						return Transpose;
 				}
 				break;
 				case TransposeGemm : {
-					if (findAndReplaceTransposeGemm(ctx, scop, reads, writes) == true)
+					if (findTransposeGemm(ctx, scop, reads, writes) == true)
 						return TransposeGemm;
 				}
 				break;
+				case BatchGemm : {
+					if (findBatchGemm(ctx, scop, reads, writes) == true)
+						return BatchGemm;
+				}
+				break;
+				case DotProduct : {
+					if (findDotProduct(ctx, scop, reads, writes) == true)
+						return DotProduct;
+				}
+				break;
+				case Axpy : {
+					if (findAxpy(ctx, scop, reads, writes) == true)
+						return Axpy;
+				}
 			}
 		}
 	}
@@ -132,51 +171,31 @@ findPatterns(isl::ctx ctx,
 
 
 bool
-findAndReplaceGemm(isl::ctx ctx,
+findGemm(isl::ctx ctx,
 									 Scop scop,
 									 isl::union_map reads,
 									 isl::union_map writes) {
-	auto isGemm = findGemmAccess(ctx, reads, writes);
+	bool isGemm = findGemmAccess(ctx, reads, writes);
 	if (isGemm == true) {
-		std::cout << "Found Gemm" << std::endl;
+		auto accessdom = reads.domain();
+		auto scheddom = scop.schedule.get_domain();
 
-		auto dom =reads.domain();
-		scop.schedule.dump();
-		auto test = scop.schedule.get_domain();
-		//	auto test3 = test.get_root();
-
-		dom.dump();
-		test.dump();
-
-		if (dom.is_subset(test)) {
-			std::cout << "Is subset" << std::endl;
+		if (accessdom.is_subset(scheddom)) {
+			isl::schedule_node root = scop.schedule.get_root();
+			isl::schedule_node subnode;
+			searchRootNodeMatchingDomain(root, accessdom, subnode);
+			isl::schedule_node *_node;
+			auto dependences = computeAllDependences(scop);
+			subnode = mergeIfTilable(subnode, dependences);
+			isGemm = findGemmTree(subnode, _node);
 		}
-
-	//test3.dump();
-	} else {
-		return false;
 	}
-}
-
-// If this function is called, then &subnode will necessary be 
-// updated with a node because we ensured that the domain was 
-// indeed a subset of the Scop's domain.
-void
-searchRootNodeMatchingDomain(isl::schedule_node node, 
-														 isl::union_set domain,
-														 isl::schedule_node &subnode) {
-	if (node.get_domain().is_equal(domain)) {
-		subnode = node;		
-	}
-	else {
-		for (int i = 0; i < node.n_children(); ++i) 
-			searchRootNodeMatchingDomain(node.get_child(i), domain, subnode);
-	}
+	return isGemm;
 }
 
 
 bool
-findAndReplaceTranspose(isl::ctx ctx,
+findTranspose(isl::ctx ctx,
 									 			Scop scop,
 									 			isl::union_map reads,
 									 			isl::union_map writes) {
@@ -204,10 +223,10 @@ findAndReplaceTranspose(isl::ctx ctx,
 
 
 bool 
-findAndReplaceTransposeGemm(isl::ctx ctx,
-									 					Scop scop,
-									 					isl::union_map reads,
-									 					isl::union_map writes) {
+findTransposeGemm(isl::ctx ctx,
+									Scop scop,
+									isl::union_map reads,
+									isl::union_map writes) {
 														
 	bool isTransposeGemm = findTransposeGemmAccess(ctx, reads, writes);
 	if (isTransposeGemm == true) {
@@ -236,71 +255,69 @@ findAndReplaceTransposeGemm(isl::ctx ctx,
 
 
 bool 
-findBatchedGemm(isl::ctx ctx, 
-								Scop scop) {
-	auto dependences = computeAllDependences(scop);
-	scop.schedule = mergeIfTilable(scop.schedule.get_root(), dependences).get_schedule();
+findBatchGemm(isl::ctx ctx, 
+								Scop scop,
+								isl::union_map reads,
+								isl::union_map writes) {
+	bool isBatchGemm = findBatchGemmAccess(ctx, reads, writes);
+	if (isBatchGemm == true) {
+		auto accessdom = reads.domain();
+		auto scheddom = scop.schedule.get_domain();
 
-	isl::schedule_node root = scop.schedule.get_root();
-	isl::schedule_node node;
-
-	bool foundGemm = false;
-	// std::cout << foundGemm << std::endl;
-
-	// root.dump();
-	// if (findBatchedGemmTree(root, &node) == true) {
-	//     foundGemm = true;
-	// }
-
-	isl::union_map reads = scop.reads;
-	isl::union_map writes = scop.mustWrites;
-
-	reads.dump();
-	writes.dump();
-
-	//foundGemm = true;
-	if (findBatchGemmAccess(ctx, reads, writes) == true) {
-		foundGemm = true;
+		if (accessdom.is_subset(scheddom)) {
+			isl::schedule_node root = scop.schedule.get_root();
+			isl::schedule_node subnode;
+			searchRootNodeMatchingDomain(root, accessdom, subnode);
+			isl::schedule_node *_node;
+			auto dependences = computeAllDependences(scop);
+			subnode = mergeIfTilable(subnode, dependences);
+			isBatchGemm = findGemmTree(subnode, _node);
+		}
 	}
+	return isBatchGemm;
+								}
 
-	if (foundGemm == true) {
-		std::cout << "It matches" << std::endl;
-	}
-	else {
-		std::cout << "It doesn't match" << std::endl;
-	}
 
-	std::cout << foundGemm << std::endl;
-	return foundGemm;
+bool 
+findAxpy(isl::ctx ctx, 
+				 Scop scop,
+				 isl::union_map reads,
+				 isl::union_map writes) {
+	bool isAxpy = findAxpyAccess(ctx, reads, writes);
+	if (isAxpy == true) {
+		auto accessdom = reads.domain();
+		auto scheddom = scop.schedule.get_domain();
+
+		if (accessdom.is_subset(scheddom)) {
+			isl::schedule_node root = scop.schedule.get_root();
+			isl::schedule_node subnode;
+			searchRootNodeMatchingDomain(root, accessdom, subnode);
+			isl::schedule_node *_node;
+			isAxpy = findAxpyTree(subnode, _node);
+		}
+	}
+	return isAxpy;
 }
 
+bool 
+findDotProduct(isl::ctx ctx, 
+							 Scop scop,
+							 isl::union_map reads,
+							 isl::union_map writes) {
+	bool isDotProduct = findDotProductAccess(ctx, reads, writes);
+	if (isDotProduct == true) {
+		auto accessdom = reads.domain();
+		auto scheddom = scop.schedule.get_domain();
 
-
-bool findAxpy(isl::ctx ctx, Scop scop) {
-	isl::schedule_node root = scop.schedule.get_root();
-	isl::schedule_node node;
-	bool test = findAxpyTree(root, &node);
-	if (test == true) {
-		std::cout << "matches" << std::endl;
-	} else {
-		std::cout << "no match" << std::endl;
+		if (accessdom.is_subset(scheddom)) {
+			isl::schedule_node root = scop.schedule.get_root();
+			isl::schedule_node subnode;
+			searchRootNodeMatchingDomain(root, accessdom, subnode);
+			isl::schedule_node *_node;
+			isDotProduct = findDotProductTree(subnode, _node);
+		}
 	}
-}
-
-// bool findDotProduct(isl::ctx ctx, Scop scop) {
-// 	isl::union_map reads = scop.reads;
-// 	isl::union_map writes = scop.mustWrites;
-// 	bool test = findDotProductAccess(ctx, reads, writes);
-// }
-
-bool findDotProduct(isl::ctx ctx, Scop scop) {
-	isl::schedule_node root = scop.schedule.get_root();
-	isl::schedule_node node;
-	if (findDotProductTree(root, &node) == true) {
-		std::cout << "matches" << std::endl;
-	}	else {
-		std::cout << "no match" << std::endl;
-	}
+	return isDotProduct;
 }
 } // namespace blasMathers
 
