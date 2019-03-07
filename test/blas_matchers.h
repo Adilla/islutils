@@ -10,6 +10,7 @@
 
 using namespace blasAccessMatchers;
 using namespace blasTreeMatchers;
+using namespace builders;
 //using namespace isl;
 
 
@@ -86,7 +87,7 @@ associateRW(UmapPair reads, UmapPair writes) {
 	return rw;
 }
 
-void 
+int 
 findPatterns(isl::ctx ctx, 
 						 Scop scop) {
 	isl::union_map _reads = scop.reads.curry();
@@ -111,38 +112,22 @@ findPatterns(isl::ctx ctx,
 			Kernel k = (Kernel)i;
 			switch(k) {
 				case Gemm :
-					//std::cout << "Searching for Gemm" << std::endl;
 					if (findAndReplaceGemm(ctx, scop, reads, writes) == true)
-						std::cout << "Found Gemm" << std::endl;
+						return Gemm;
 					break;
 				case Transpose : {
-					//std::cout << "Searching for Transpose" << std::endl;
 					if (findAndReplaceTranspose(ctx, scop, reads, writes) == true)
-						std::cout << "Found transpose" << std::endl;
+						return Transpose;
 				}
 				break;
 				case TransposeGemm : {
- 					//std::cout << "Searching for TransposeGemm " << std::endl;
-					auto isTransposeGemm = findAndReplaceTransposeGemm(ctx, scop, reads, writes);
-					if (isTransposeGemm == true)
-						std::cout << "Found TransposeGemm" << std::endl;
+					if (findAndReplaceTransposeGemm(ctx, scop, reads, writes) == true)
+						return TransposeGemm;
 				}
 				break;
 			}
 		}
 	}
-
-	// Accesses accesses = restructureScop(ctx, _reads, _writes);
-
-	// auto reads = accesses.first;
-	// auto writes = accesses.second;
-
-
-	// for (auto it = reads.begin(); it != reads.end(); ++it) {
-	// 	auto thisRead = it
-	// }
-
-	// auto test = findAndReplaceGemm(ctx, scop, accesses);
 }
 
 
@@ -180,21 +165,22 @@ void
 searchRootNodeMatchingDomain(isl::schedule_node node, 
 														 isl::union_set domain,
 														 isl::schedule_node &subnode) {
-		if (node.get_domain().is_equal(domain)) 
-			subnode = node;
-		else {
-			for (int i = 0; i < node.n_children(); ++i) 
-				searchRootNodeMatchingDomain(node.get_child(i), domain, subnode);
-		}
+	if (node.get_domain().is_equal(domain)) {
+		subnode = node;		
+	}
+	else {
+		for (int i = 0; i < node.n_children(); ++i) 
+			searchRootNodeMatchingDomain(node.get_child(i), domain, subnode);
+	}
 }
 
 
 bool
 findAndReplaceTranspose(isl::ctx ctx,
-									 Scop scop,
-									 isl::union_map reads,
-									 isl::union_map writes) {
-	auto isTranspose = findTransposeAccess(ctx, reads, writes);
+									 			Scop scop,
+									 			isl::union_map reads,
+									 			isl::union_map writes) {
+	bool isTranspose = findTransposeAccess(ctx, reads, writes);
 	if (isTranspose == true) {
 		//std::cout << "Found Transpose" << std::endl;
 		// At this point it doesn't matter whether we use the
@@ -204,29 +190,26 @@ findAndReplaceTranspose(isl::ctx ctx,
 	
 		if (accessdom.is_subset(scheddom)) {
 			isl::schedule_node root = scop.schedule.get_root();
-			//root.dump();
 			isl::schedule_node *_node;
 			isl::schedule_node subnode;
 			searchRootNodeMatchingDomain(root, accessdom, subnode);
-			subnode.dump();
-
-			if (findTransposeTree(subnode, _node) == true) {
-				std::cout << "Full transpose kernel" << std::endl;
-			}
+			// Update isTranspose, perhaps the result is False, 
+			// then the functions shall return false.
+			isTranspose = findTransposeTree(subnode, _node); 
 		}
-	} else {
-		return false;
 	}
+	return isTranspose;
 }
-
+	
 
 
 bool 
 findAndReplaceTransposeGemm(isl::ctx ctx,
-									 Scop scop,
-									 isl::union_map reads,
-									 isl::union_map writes) {
-	auto isTransposeGemm = findTransposeGemmAccess(ctx, reads, writes);
+									 					Scop scop,
+									 					isl::union_map reads,
+									 					isl::union_map writes) {
+														
+	bool isTransposeGemm = findTransposeGemmAccess(ctx, reads, writes);
 	if (isTransposeGemm == true) {
 		std::cout << "Found transpose gemm access" << std::endl;
 		// At this point it doesn't matter whether we use the
@@ -238,21 +221,16 @@ findAndReplaceTransposeGemm(isl::ctx ctx,
 			isl::schedule_node root = scop.schedule.get_root();
 			isl::schedule_node subnode;
 			searchRootNodeMatchingDomain(root, accessdom, subnode);
-			subnode.dump();
 			isl::schedule_node *_node;
 			// Of course, the tree should be the same as 
 			// standard Gemm.
 			auto dependences = computeAllDependences(scop);
 			subnode = mergeIfTilable(subnode, dependences);
-			if (findGemmTree(subnode, _node) == true) {
-				std::cout << "Full transpose gemm kernel" << std::endl;
-			}
-			else { std::cout << "No gemm tree" << std::endl;}
-		 }
-	} else {
-		return false;
+			isTransposeGemm = findGemmTree(subnode, _node);
+		}
 	}
-}
+	return isTransposeGemm;
+}							 
 									 
 
 

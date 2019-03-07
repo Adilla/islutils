@@ -778,14 +778,13 @@ TEST(Transformer, DISABLED_MatchGemm) {
 TEST(Transformer, MatchMatmul) {
 
   auto ctx = ScopedCtx(pet::allocCtx());
-  auto petScop = pet::Scop::parseFile(ctx, "inputs/tmm.c");
+  auto petScop = pet::Scop::parseFile(ctx, "inputs/1mmWithoutInitStmt.c");
   auto scop = petScop.getScop();
 
   auto dependences = computeAllDependences(scop);
   scop.schedule =
       mergeIfTilable(scop.schedule.get_root(), dependences).get_schedule();
 
-  scop.schedule.dump();
   isl::schedule_node root = scop.schedule.get_root();
   //root.dump();
 
@@ -809,9 +808,6 @@ TEST(Transformer, MatchMatmul) {
   isl::union_map reads = scop.reads.curry();
   isl::union_map writes = scop.mustWrites.curry();
 
-  reads.dump();
-  writes.dump();
-
   auto _i = placeholder(ctx);
   auto _j = placeholder(ctx);
   auto _k = placeholder(ctx);
@@ -825,7 +821,6 @@ TEST(Transformer, MatchMatmul) {
 
   auto input = allOf(access(dim(-1, stride(ctx, 0))));
   auto test = match(reads, input);
-  std::cout << test.size() << std::endl;
 
   auto psRead =
       allOf(access(_A, _i, _j), access(_B, _i, _k), access(_C, _k, _j));
@@ -998,4 +993,5 @@ TEST(Transformer, MatchMatmul) {
   root = node.root();
   petScop.schedule() = root.get_schedule();
   result = petScop.codegen();
+  std::cout << result << std::endl;
 }

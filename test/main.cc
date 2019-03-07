@@ -21,9 +21,12 @@ int main(int argc, char **argv) {
 
     //auto gemm = blasMatchers::findAndReplaceGemm(ctx, scop);
 
+    
+    int pattern = blasMatchers::findPatterns(ctx, scop);
 
-    blasMatchers::findPatterns(ctx, scop);
+    std::cout << pattern << std::endl;
     std::cout << inputFile << std::endl;
+    std::cout << petScop.codegen() << std::endl;
     // Create a collection of matchers per type of kernel.
     // i.e. a matcher for gemm, tgemm, batchgemm, axpy, whatver. matrix-vector product, dot product, axpy.
     // on peut probablement s'inspirer du matcher de gemm déja existant.
