@@ -738,34 +738,23 @@ TEST(Transformer, Gemm) {
   auto nodesched = node.band_get_partial_schedule();
   auto mapgemm = isl::union_map(ctx, "{S_0[i, j, k]->gemm[] :}");
 
-  auto testt = isl::union_set(ctx, "[alpha] -> { S_0[i, j, k] : i = 0 and j = 0 and k = 0 }");
+  auto nulldom = isl::union_set(ctx, "[alpha] -> { S_0[i, j, k] : i = 0 and j = 0 and k = 0 }");
   
-  //testt.dump();
   auto nodedom = noderoot.domain_get_domain();
 
-  auto kk = testt.intersect(nodedom);
+  auto newdom = nulldom.intersect(nodedom);
 
 
-  auto newnode = domain(kk,
+  auto newnode = domain(newdom,
                  //   band(nodesched.sub(nodesched),
                       extension(mapgemm)
                   //  )
                   ).build();
-
-
-  // node = rebuild(node, newnode);
-  // node.dump();
   
-  newnode.root().dump();
-
   petScop.schedule() = newnode.root().get_schedule();
 
   std::cout << petScop.codegen() << std::endl;
 
-  //root.dump();
-  //root.domain_get_domain() = testt;
-
-  //root.dump();
 
 }
 

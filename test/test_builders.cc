@@ -45,6 +45,9 @@ TEST(Builders, ExtensionAlone) {
   auto m = isl::map::from_union_map(node.child(0).extension_get_extension());
   EXPECT_EQ(m.get_tuple_name(isl::dim::out), "test");
 
+
+  node.dump();
+
   ctx.release();
 }
 
@@ -66,6 +69,7 @@ TEST(Builders, ExtensionSetMixed) {
                     filter(filterTest)))).build();
   // clang-format on
 
+  node.dump();
   EXPECT_EQ(isl_schedule_node_get_type(node.child(0).child(0).get()),
             isl_schedule_node_set);
   EXPECT_EQ(node.child(0).child(0).n_children(), 2);
@@ -91,6 +95,8 @@ TEST(Builders, Expansion) {
                   expansion(expansionMap,
                     band(secondBand)))).build();
   // clang-format on
+
+
 
   // If expansion works, we get two different maps (S1 and S2) at the leaf but
   // only one at the first band.

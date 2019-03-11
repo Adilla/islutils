@@ -22,9 +22,13 @@ int main(int argc, char **argv) {
     //auto gemm = blasMatchers::findAndReplaceGemm(ctx, scop);
 
     
-    int pattern = blasMatchers::findPatterns(ctx, scop);
+    auto pattern = blasMatchers::findPatterns(ctx, scop);
+    petScop.schedule() = pattern;
 
-    std::cout << pattern << std::endl;
+    std::cout << petScop.codegen() << std::endl;;
+
+
+    //std::cout << pattern << std::endl;
     std::cout << inputFile << std::endl;
     std::cout << petScop.codegen() << std::endl;
     // Create a collection of matchers per type of kernel.
