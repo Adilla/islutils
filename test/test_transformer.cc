@@ -55,7 +55,7 @@ TEST(Transformer, DISABLED_Capture) {
   // now.
   ASSERT_TRUE(
       matchers::ScheduleNodeMatcher::isMatching(matcher, node.child(0)));
-  node.dump();
+ 
 
   // Let's transform!
   auto transformedBuilder = [&]() {
@@ -222,9 +222,6 @@ static bool canMerge(isl::schedule_node parentBand,
   auto positiveOrthant =
       isl::set(isl::basic_set::positive_orthant(scheduleSpace));
   dependences = filterOutCarriedDependences(dependences, parentBand);
-  std::cout << "meeeh" << std::endl;
-  positiveOrthant.dump();
-  dependences.apply_domain(schedule).apply_range(schedule).dump();
 
   return dependences.apply_domain(schedule)
       .apply_range(schedule)
@@ -289,7 +286,6 @@ isl::schedule_node mergeIfTilable(isl::schedule_node node,
   isl::schedule_node parent, child, grandchild;
 
   auto canMergeCaptureChild = [&child, dependences](isl::schedule_node node) {
-    node.dump();
     if (canMerge(node.parent(), dependences)) {
       child = node;
       return true;
@@ -678,104 +674,102 @@ TEST(Transformer, DISABLED_MatchGemm) {
 }
 
 
-// TEST(Transformer, SIMDCodegen) {
 
-//   using namespace matchers;
-//   using namespace builders;
+TEST(Transformer, Gemm) {
 
-//   auto ctx = ScopedCtx(pet::allocCtx());
-//   auto petScop = pet::Scop::parseFile(ctx, "inputs/gemm.c");
-//   auto scop = petScop.getScop();
+  auto ctx = ScopedCtx(pet::allocCtx());
+  auto petScop = pet::Scop::parseFile(ctx, "inputs/gemm.c");
+  auto scop = petScop.getScop();
+
+  auto dependences = computeAllDependences(scop);
+  scop.schedule =
+      mergeIfTilable(scop.schedule.get_root(), dependences).get_schedule();
+
+  isl::schedule_node root = scop.schedule.get_root();
   
-//   isl::union_map reads = scop.reads.curry();
-//   isl::union_map writes = scop.mustWrites.curry();
+  using namespace matchers;
+  isl::schedule_node node;
+  // clang-format off
+  auto matcher = band(
+    [&node] (isl::schedule_node n) {
+      if (isl_schedule_node_band_n_member(n.get()) < 3) {
+        return false;
+      } else {
+        node = n;
+        return true;
+      }
+    },
+    leaf());
+  // clang-format on
 
-//   isl::schedule_node root = scop.schedule.get_root().get_child(0).get_child(0).get_child(0);
+  ASSERT_TRUE(ScheduleNodeMatcher::isMatching(matcher, root.child(0)));
 
-//   root.dump();
-//   root.band_get_partial_schedule().dump();
-//   root.band_get_partial_schedule()
+  isl::union_map reads = scop.reads.curry();
+  isl::union_map writes = scop.mustWrites.curry();
 
-//   // reads = reads.intersect_domain(root.get_domain());
-//   // reads.dump();
+  auto _i = placeholder(ctx);
+  auto _j = placeholder(ctx);
+  auto _k = placeholder(ctx);
+  auto _ii = placeholder(ctx);
+  auto _jj = placeholder(ctx);
 
+  auto _A = arrayPlaceholder();
+  auto _B = arrayPlaceholder();
+  auto _C = arrayPlaceholder();
 
+  auto input = allOf(access(dim(-1, stride(ctx, 0))));
+  auto test = match(reads, input);
 
-//   // auto isStrideZeroOne = [&](isl::schedule_node n) {
+  auto psRead =
+      allOf(access(_A, _i, _j), access(_B, _i, _k), access(_C, _k, _j));
+  auto readMatches = match(reads, psRead);
+  auto psWrite = allOf(access(_A, _ii, _jj));
+  auto writeMatches = match(writes, psWrite);
 
-//   //   auto accStrideZero = access(dim(-1, stride(ctx, 0)));
-//   //   auto accStrideOne = access(dim(-1, stride(ctx, 1)));
-//   //   auto compliantAccesses = allOf(accStrideOne);
-//   //   auto matchingReads = match(reads, compliantAccesses);
-//   //   auto matchingWrites = match(writes, compliantAccesses);
-
-//   //   return matchingReads.size() == 1 && matchingWrites.size() == 1;
-//   // };
-
-
-
-//   // isl::schedule_node node;
-//   // int leafDepth;
-
-//   // auto isInnermostCoincident = [&node, &leafDepth] (isl::schedule_node n) {
-//   //   if (isl_schedule_node_has_children(n.get()) == false &&
-//   //     isl_schedule_node_band_member_get_coincident(n.get(), 0) == true) {
-//   //       node = n;
-//   //       leafDepth = isl_schedule_node_get_tree_depth(n.get());
-//   //       return true;
-//   //   }
-//   //   else {
-//   //     return false;
-//   //   }
-//   // };
-
-
-//   // auto matcher =
-//   //   band([&] (isl::schedule_node n) {
-//   //     return isInnermostCoincident(n) && isStrideZeroOne(n);
-//   //   },
-//   //   leaf());
+  ASSERT_EQ(readMatches.size(), 1u);
+  ASSERT_EQ(writeMatches.size(), 1u);
 
 
+  //petScop.schedule() = node.root().get_schedule();
+ // std::cout << "Codeeegen\n" << petScop.codegen() << std::endl;
 
+  using namespace builders;
+  auto noderoot = node.root();
+  auto nodesched = node.band_get_partial_schedule();
+  auto mapgemm = isl::union_map(ctx, "{S_0[i, j, k]->gemm[] :}");
 
-
+  auto testt = isl::union_set(ctx, "[alpha] -> { S_0[i, j, k] : i = 0 and j = 0 and k = 0 }");
   
+  //testt.dump();
+  auto nodedom = noderoot.domain_get_domain();
 
-//   // auto accessesStrideZero = access(dim(-1, stride(ctx, 0)));
-//   // auto accessesStrideOne = access(dim(-2, stride(ctx, 1)));
-//   // auto compliantAccesses = allOf(accessesStrideOne);
-//   // auto matchingReads = match(reads, compliantAccesses);
-//   // auto matchingWrites = match(writes, compliantAccesses);
-
-//   // std::cout << matchingReads.size() << std::endl;
-//   // for (auto &mr : matchingReads) {
-//   //   for (const auto &ca : compliantAccesses) {
-//   //      auto cs = mr[ca].candidateSpaces();
-//   //      for (auto data : cs) {
-//   //        data.dump();
-//   //     }
-//   //   }
-//   // }
+  auto kk = testt.intersect(nodedom);
 
 
-//   // std::cout << matchingReads.size() << std::endl;
-//   // isl::schedule_node node;
-//   // // We want to capture the innermost loop.
-//   // auto matcher = 
-//   //   band(node,
-//   //     and_(not_(hasDescendant(band(anyTree()))),
-//   //       [&node] () {
-//   //         if (isl_schedule_node_band_member_get_coincident(node.get(), 0) == true
-//   //       }),
-//   //       anyTree());
+  auto newnode = domain(kk,
+                 //   band(nodesched.sub(nodesched),
+                      extension(mapgemm)
+                  //  )
+                  ).build();
 
-//   // // Access matcher for a compliant access pattern
-//   // auto A = matchers::arrayPlaceholder();
- 
-// }
 
-TEST(Transformer, MatchMatmul) {
+  // node = rebuild(node, newnode);
+  // node.dump();
+  
+  newnode.root().dump();
+
+  petScop.schedule() = newnode.root().get_schedule();
+
+  std::cout << petScop.codegen() << std::endl;
+
+  //root.dump();
+  //root.domain_get_domain() = testt;
+
+  //root.dump();
+
+}
+
+TEST(Transformer, DISABLED_MatchMatmul) {
 
   auto ctx = ScopedCtx(pet::allocCtx());
   auto petScop = pet::Scop::parseFile(ctx, "inputs/1mmWithoutInitStmt.c");
