@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/CMakeFiles/pet"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/CMakeFiles/pet.rule"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/CMakeFiles/pet-complete.rule"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/external/pet/src/pet-stamp/pet-install.rule"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/external/pet/src/pet-stamp/pet-mkdir.rule"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/external/pet/src/pet-stamp/pet-download.rule"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/external/pet/src/pet-stamp/pet-update.rule"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/external/pet/src/pet-stamp/pet-patch.rule"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/external/pet/src/pet-stamp/pet-configure.rule"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/external/pet/src/pet-stamp/pet-build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"pet"
+		],
+		"name" : "pet"
+	}
+}

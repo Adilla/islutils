@@ -1,0 +1,4 @@
+dummy.o: /home/adilla/Documents/SchedTrees/islutils/external/pet/dummy.cc \
+ /usr/include/stdc-predef.h
+
+/usr/include/stdc-predef.h:

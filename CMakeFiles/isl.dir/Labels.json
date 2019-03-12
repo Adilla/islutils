@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/CMakeFiles/isl"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/CMakeFiles/isl.rule"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/CMakeFiles/isl-complete.rule"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/external/isl/src/isl-stamp/isl-install.rule"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/external/isl/src/isl-stamp/isl-mkdir.rule"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/external/isl/src/isl-stamp/isl-download.rule"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/external/isl/src/isl-stamp/isl-update.rule"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/external/isl/src/isl-stamp/isl-patch.rule"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/external/isl/src/isl-stamp/isl-configure.rule"
+		},
+		{
+			"file" : "/home/adilla/Documents/SchedTrees/islutils/external/isl/src/isl-stamp/isl-build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"isl"
+		],
+		"name" : "isl"
+	}
+}

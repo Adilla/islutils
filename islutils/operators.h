@@ -1,7 +1,7 @@
 #ifndef ISLUTILS_OPERATORS
 #define ISLUTILS_OPERATORS
 
-#include "islutils/type_traits.h"
+#include "type_traits.h"
 
 #include <isl/cpp.h>
 

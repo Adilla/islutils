@@ -1,8 +1,8 @@
 #ifndef ISLUTILS_PET_WRAPPER_H
 #define ISLUTILS_PET_WRAPPER_H
 
-#include <islutils/scop.h>
-#include <islutils/type_traits.h>
+#include "scop.h"
+#include "type_traits.h"
 
 #include <string>
 

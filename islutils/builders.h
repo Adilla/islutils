@@ -25,7 +25,7 @@ class BandDescriptor {
 public:
   /* implicit */ BandDescriptor(isl::multi_union_pw_aff mupa)
       : partialSchedule(mupa), coincident(false, mupa.dim(isl::dim::set)),
-        permutable(false) {}
+        permutable(false), blasKernel(-1) {}
 
   explicit BandDescriptor(isl::schedule_node band);
 
@@ -37,6 +37,11 @@ public:
 
   // options for codeGen.
   isl::union_set astOptions;
+
+  // Extension for BLAS pattern matching
+  // The default value is -1 since we assume
+  // there is no kernel found yet.
+  int blasKernel;
 };
 
 /** \ingroup Builders

@@ -1,8 +1,8 @@
 #include <pet.h>
 
-#include "islutils/die.h"
-#include "islutils/operators.h"
-#include "islutils/pet_wrapper.h"
+#include "die.h"
+#include "operators.h"
+#include "pet_wrapper.h"
 
 #include <vector>
 

@@ -1,0 +1,13 @@
+# Target labels
+ pet
+# Source files and their labels
+/home/adilla/Documents/SchedTrees/islutils/CMakeFiles/pet
+/home/adilla/Documents/SchedTrees/islutils/CMakeFiles/pet.rule
+/home/adilla/Documents/SchedTrees/islutils/CMakeFiles/pet-complete.rule
+/home/adilla/Documents/SchedTrees/islutils/external/pet/src/pet-stamp/pet-install.rule
+/home/adilla/Documents/SchedTrees/islutils/external/pet/src/pet-stamp/pet-mkdir.rule
+/home/adilla/Documents/SchedTrees/islutils/external/pet/src/pet-stamp/pet-download.rule
+/home/adilla/Documents/SchedTrees/islutils/external/pet/src/pet-stamp/pet-update.rule
+/home/adilla/Documents/SchedTrees/islutils/external/pet/src/pet-stamp/pet-patch.rule
+/home/adilla/Documents/SchedTrees/islutils/external/pet/src/pet-stamp/pet-configure.rule
+/home/adilla/Documents/SchedTrees/islutils/external/pet/src/pet-stamp/pet-build.rule
