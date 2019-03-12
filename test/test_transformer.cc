@@ -6,6 +6,24 @@
 #include <islutils/locus.h>
 #include <islutils/matchers.h>
 #include <islutils/pet_wrapper.h>
+#include <string.h>
+#include <isl/ctx.h>
+#include <isl/id.h>
+#include <isl/val.h>
+#include <isl/set.h>
+#include <isl/union_set.h>
+#include <isl/union_map.h>
+#include <isl/aff.h>
+#include <isl/flow.h>
+#include <isl/options.h>
+#include <isl/schedule.h>
+#include <isl/ast.h>
+#include <isl/id_to_ast_expr.h>
+#include <isl/ast_build.h>
+#include <isl/schedule.h>
+
+#include "ppcg.h"
+
 
 using util::ScopedCtx;
 
@@ -739,11 +757,8 @@ TEST(Transformer, Gemm) {
   auto mapgemm = isl::union_map(ctx, "{S_0[i, j, k]->gemm[] :}");
 
   auto nulldom = isl::union_set(ctx, "[alpha] -> { S_0[i, j, k] : i = 0 and j = 0 and k = 0 }");
-  
   auto nodedom = noderoot.domain_get_domain();
-
   auto newdom = nulldom.intersect(nodedom);
-
 
   auto newnode = domain(newdom,
                  //   band(nodesched.sub(nodesched),
@@ -752,9 +767,9 @@ TEST(Transformer, Gemm) {
                   ).build();
   
   petScop.schedule() = newnode.root().get_schedule();
-
   std::cout << petScop.codegen() << std::endl;
 
+  
 
 }
 

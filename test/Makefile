@@ -200,6 +200,21 @@ test_builders/fast:
 .PHONY : test_builders/fast
 
 # Convenience name for target.
+test/CMakeFiles/check.dir/rule:
+	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/check.dir/rule
+.PHONY : test/CMakeFiles/check.dir/rule
+
+# Convenience name for target.
+check: test/CMakeFiles/check.dir/rule
+
+.PHONY : check
+
+# fast build rule for target.
+check/fast:
+	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f test/CMakeFiles/check.dir/build.make test/CMakeFiles/check.dir/build
+.PHONY : check/fast
+
+# Convenience name for target.
 test/CMakeFiles/check-builders.dir/rule:
 	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/check-builders.dir/rule
 .PHONY : test/CMakeFiles/check-builders.dir/rule
@@ -230,19 +245,49 @@ test_transformer/fast:
 .PHONY : test_transformer/fast
 
 # Convenience name for target.
-test/CMakeFiles/check.dir/rule:
-	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/check.dir/rule
-.PHONY : test/CMakeFiles/check.dir/rule
+test/CMakeFiles/ppcg.dir/rule:
+	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/ppcg.dir/rule
+.PHONY : test/CMakeFiles/ppcg.dir/rule
 
 # Convenience name for target.
-check: test/CMakeFiles/check.dir/rule
+ppcg: test/CMakeFiles/ppcg.dir/rule
 
-.PHONY : check
+.PHONY : ppcg
 
 # fast build rule for target.
-check/fast:
-	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f test/CMakeFiles/check.dir/build.make test/CMakeFiles/check.dir/build
-.PHONY : check/fast
+ppcg/fast:
+	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f test/CMakeFiles/ppcg.dir/build.make test/CMakeFiles/ppcg.dir/build
+.PHONY : ppcg/fast
+
+# Convenience name for target.
+test/CMakeFiles/test_set_maker.dir/rule:
+	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/test_set_maker.dir/rule
+.PHONY : test/CMakeFiles/test_set_maker.dir/rule
+
+# Convenience name for target.
+test_set_maker: test/CMakeFiles/test_set_maker.dir/rule
+
+.PHONY : test_set_maker
+
+# fast build rule for target.
+test_set_maker/fast:
+	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f test/CMakeFiles/test_set_maker.dir/build.make test/CMakeFiles/test_set_maker.dir/build
+.PHONY : test_set_maker/fast
+
+# Convenience name for target.
+test/CMakeFiles/check-transformer.dir/rule:
+	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/check-transformer.dir/rule
+.PHONY : test/CMakeFiles/check-transformer.dir/rule
+
+# Convenience name for target.
+check-transformer: test/CMakeFiles/check-transformer.dir/rule
+
+.PHONY : check-transformer
+
+# fast build rule for target.
+check-transformer/fast:
+	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f test/CMakeFiles/check-transformer.dir/build.make test/CMakeFiles/check-transformer.dir/build
+.PHONY : check-transformer/fast
 
 # Convenience name for target.
 test/CMakeFiles/test_access.dir/rule:
@@ -288,78 +333,6 @@ check-matcher: test/CMakeFiles/check-matcher.dir/rule
 check-matcher/fast:
 	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f test/CMakeFiles/check-matcher.dir/build.make test/CMakeFiles/check-matcher.dir/build
 .PHONY : check-matcher/fast
-
-# Convenience name for target.
-test/CMakeFiles/main.dir/rule:
-	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/main.dir/rule
-.PHONY : test/CMakeFiles/main.dir/rule
-
-# Convenience name for target.
-main: test/CMakeFiles/main.dir/rule
-
-.PHONY : main
-
-# fast build rule for target.
-main/fast:
-	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/build
-.PHONY : main/fast
-
-# Convenience name for target.
-test/CMakeFiles/test_set_maker.dir/rule:
-	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/test_set_maker.dir/rule
-.PHONY : test/CMakeFiles/test_set_maker.dir/rule
-
-# Convenience name for target.
-test_set_maker: test/CMakeFiles/test_set_maker.dir/rule
-
-.PHONY : test_set_maker
-
-# fast build rule for target.
-test_set_maker/fast:
-	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f test/CMakeFiles/test_set_maker.dir/build.make test/CMakeFiles/test_set_maker.dir/build
-.PHONY : test_set_maker/fast
-
-# Convenience name for target.
-test/CMakeFiles/check-transformer.dir/rule:
-	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/check-transformer.dir/rule
-.PHONY : test/CMakeFiles/check-transformer.dir/rule
-
-# Convenience name for target.
-check-transformer: test/CMakeFiles/check-transformer.dir/rule
-
-.PHONY : check-transformer
-
-# fast build rule for target.
-check-transformer/fast:
-	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f test/CMakeFiles/check-transformer.dir/build.make test/CMakeFiles/check-transformer.dir/build
-.PHONY : check-transformer/fast
-
-main.o: main.cc.o
-
-.PHONY : main.o
-
-# target to build an object file
-main.cc.o:
-	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/main.cc.o
-.PHONY : main.cc.o
-
-main.i: main.cc.i
-
-.PHONY : main.i
-
-# target to preprocess a source file
-main.cc.i:
-	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/main.cc.i
-.PHONY : main.cc.i
-
-main.s: main.cc.s
-
-.PHONY : main.s
-
-# target to generate assembly for a file
-main.cc.s:
-	cd /home/adilla/Documents/SchedTrees/islutils && $(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/main.cc.s
-.PHONY : main.cc.s
 
 test_access.o: test_access.cc.o
 
@@ -511,18 +484,15 @@ help:
 	@echo "... check-set_maker"
 	@echo "... rebuild_cache"
 	@echo "... test_builders"
+	@echo "... check"
 	@echo "... check-builders"
 	@echo "... test_transformer"
-	@echo "... check"
+	@echo "... ppcg"
+	@echo "... test_set_maker"
+	@echo "... check-transformer"
 	@echo "... test_access"
 	@echo "... test_matcher"
 	@echo "... check-matcher"
-	@echo "... main"
-	@echo "... test_set_maker"
-	@echo "... check-transformer"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
 	@echo "... test_access.o"
 	@echo "... test_access.i"
 	@echo "... test_access.s"

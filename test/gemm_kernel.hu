@@ -1,0 +1,5 @@
+#include <cuda_runtime.h>
+#include "cuda.h"
+#include "cublas_v2.h"
+
+__global__ void kernel0(int *A, int *B, int *D, int alpha);

@@ -19,8 +19,9 @@ set(TEST_INPUTS
 
 set(BLAS_MATCHES
     main)
-add_executable("main" "main.cc")
-target_link_libraries("main" islutils)
+  # add_executable("main" "main.cc")
+add_executable("ppcg" "ppcg.c")
+target_link_libraries("ppcg" islutils)
 
 add_custom_target(check COMMAND echo "Running all")
 

@@ -6,6 +6,28 @@
 
 #IncludeRegexTransform: 
 
+../ppcg/ppcg.h
+isl/schedule.h
+-
+isl/set.h
+-
+isl/union_set.h
+-
+isl/union_map.h
+-
+isl/id_to_ast_expr.h
+-
+pet.h
+-
+ppcg_options.h
+../ppcg/ppcg_options.h
+
+../ppcg/ppcg_options.h
+isl/arg.h
+-
+isl/options.h
+-
+
 /home/adilla/Documents/SchedTrees/islutils/test/test_transformer.cc
 gtest/gtest.h
 /home/adilla/Documents/SchedTrees/islutils/test/gtest/gtest.h
@@ -23,6 +45,38 @@ islutils/matchers.h
 -
 islutils/pet_wrapper.h
 -
+string.h
+-
+isl/ctx.h
+-
+isl/id.h
+-
+isl/val.h
+-
+isl/set.h
+-
+isl/union_set.h
+-
+isl/union_map.h
+-
+isl/aff.h
+-
+isl/flow.h
+-
+isl/options.h
+-
+isl/schedule.h
+-
+isl/ast.h
+-
+isl/id_to_ast_expr.h
+-
+isl/ast_build.h
+-
+isl/schedule.h
+-
+ppcg.h
+/home/adilla/Documents/SchedTrees/islutils/test/ppcg.h
 
 external/googletest/googletest/include/gtest/gtest-death-test.h
 gtest/internal/gtest-death-test-internal.h
@@ -500,6 +554,16 @@ isl/maybe_ast_expr.h
 isl/hmap.h
 -
 
+external/install-isl/include/isl/id_to_pw_aff.h
+isl/id_type.h
+-
+isl/aff_type.h
+-
+isl/maybe_pw_aff.h
+-
+isl/hmap.h
+-
+
 external/install-isl/include/isl/id_type.h
 isl/list.h
 -
@@ -581,6 +645,10 @@ isl/val_type.h
 external/install-isl/include/isl/maybe.h
 
 external/install-isl/include/isl/maybe_ast_expr.h
+isl/maybe_templ.h
+-
+
+external/install-isl/include/isl/maybe_pw_aff.h
 isl/maybe_templ.h
 -
 
@@ -790,6 +858,28 @@ isl/ctx.h
 isl/val_type.h
 -
 isl/printer.h
+-
+
+external/install-pet/include/pet.h
+isl/aff.h
+-
+isl/arg.h
+-
+isl/ast_build.h
+-
+isl/set.h
+-
+isl/map.h
+-
+isl/union_map.h
+-
+isl/printer.h
+-
+isl/id_to_ast_expr.h
+-
+isl/id_to_pw_aff.h
+-
+isl/schedule.h
 -
 
 islutils/access-inl.h
