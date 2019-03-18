@@ -142,6 +142,115 @@ makeTwoGroupPlaceholderSet(isl::ctx ctx) {
   return ps;
 }
 
+
+
+TEST(AccessMatcher, MMContraction) {
+  using namespace matchers;
+
+
+
+  auto ctx = ScopedCtx();
+  // auto umapr = isl::union_map(
+  //     ctx, "{[i, j, k] -> A[i, k]; [i, j, k] -> B[k, j]; [i, j, k] -> C[i, j]}");
+  // auto umapw = isl::union_map(
+  //     ctx, "{[i, j, k] -> C[i, j]}");
+
+  auto umapr = isl::union_map(ctx, 
+  "{[i, j, k, l] -> A[i, l]; [i, j, k, l] -> u[l, j, k]; [i, j, k, l] -> C[i, j, k]}");
+  auto umapw = isl::union_map(ctx, 
+  "{[i, j, k, l] -> C[i, j, k]}");
+
+  auto _A = arrayPlaceholder();
+  auto _B = arrayPlaceholder();
+  auto _i = placeholder(ctx);
+  auto _j = placeholder(ctx);
+
+ 
+  std::map<std::string, std::vector<int>> readArrays, writeArray;
+
+  int counter = 0;
+  auto wacc = match(umapw, allOf(access(dim(counter, _i))));
+
+  while (wacc.size() > 0u) {
+    for (int i = 0; i < wacc.size(); ++i) {
+      auto wspace = wacc[i][_i].candidateSpaces();
+      auto wname = wspace[0].get_tuple_name(isl::dim::out);
+      writeArray[wname].push_back(wacc[i][_i].payload().inputDimPos_);
+    }
+    counter += 1;
+    wacc = match(umapw, allOf(access(dim(counter, _i))));
+  } 
+
+  auto _k = placeholder(ctx);
+  int pp = 0;
+  while (match(umapr, allOf(access(dim(pp, _k)))).size() > 0u) {
+    auto res = match(umapr, allOf(access(dim(pp, _k))));
+    auto size_ = res.size();
+    for (int i = 0; i < size_; ++i) {
+      auto spacess = res[i][_k].candidateSpaces();
+      auto thename = spacess[0].get_tuple_name(isl::dim::out);
+      readArrays[thename].push_back(res[i][_k].payload().inputDimPos_);
+       
+    }
+    pp += 1;
+  }
+
+
+  // Conditions for contraction:
+  // 0. There is a reduction.
+  // 1. None of the access function have redundant iterators.
+  // 2. All of iterators of A that do not appear in C do appear in B.
+  // 3. The remaining iterators of A and B == those of C.
+
+
+  // Check reduction
+
+
+  auto wname = writeArray.begin()->first;
+  auto wacc_ = writeArray.begin()->second;
+
+  auto isReduction = (readArrays.find(wname) != readArrays.end()) && (wacc_ == readArrays[wname]);
+  
+  // Check all access functions have no redundancy
+  //std::cout << isReduction << std::endl;
+
+  // Remove writeArray from the list of reads.
+  readArrays.erase(wname);
+
+
+  auto operand1 = readArrays.begin();
+  auto operand2 = std::next(operand1);
+  
+
+  // Sort arrays before continuing
+
+  std::sort(wacc_.begin(), wacc_.end());
+  std::sort(operand1->second.begin(), operand1->second.end());
+  std::sort(operand2->second.begin(), operand2->second.end());
+
+  // Check redundancy
+  bool noRedundancy = hasNoRedundancy(wacc_);
+  for (auto r : readArrays) {
+    noRedundancy = noRedundancy && hasNoRedundancy(r.second);
+  }
+  
+  // Take the first operand of contraction and check if 
+  // there are any iterators that do not appear in C's
+  // access function
+  std::vector<int> diff1, diff2;
+  std::set_difference(operand1->second.begin(), operand1->second.end(), wacc_.begin(), wacc_.end(), std::back_inserter(diff1));
+  std::set_difference(operand2->second.begin(), operand2->second.end(), wacc_.begin(), wacc_.end(), std::back_inserter(diff2));
+
+
+  bool hasContractionAxes = (diff1.size() > 0) && (diff1 == diff2);
+
+  bool isContraction = isReduction && noRedundancy && hasContractionAxes;
+
+  std::cout << isContraction << std::endl;
+
+}
+
+
 TEST(AccessMatcher, TwoGroups) {
   using namespace matchers;
 
