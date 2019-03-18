@@ -98,7 +98,7 @@ clean: CMakeFiles/isl.dir/clean
 CMakeFiles/pet.dir/all: CMakeFiles/isl.dir/all
 	$(MAKE) -f CMakeFiles/pet.dir/build.make CMakeFiles/pet.dir/depend
 	$(MAKE) -f CMakeFiles/pet.dir/build.make CMakeFiles/pet.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=40,41,42,43,44,45,46,47 "Built target pet"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=24,25,26,27,28,29,30,31 "Built target pet"
 .PHONY : CMakeFiles/pet.dir/all
 
 # Build rule for subdir invocation for target.
@@ -130,7 +130,7 @@ clean: CMakeFiles/pet.dir/clean
 CMakeFiles/islutils.dir/all:
 	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/depend
 	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39 "Built target islutils"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=17,18,19,20,21 "Built target islutils"
 .PHONY : CMakeFiles/islutils.dir/all
 
 # Include target in all.
@@ -140,7 +140,7 @@ all: CMakeFiles/islutils.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/islutils.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 23
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 5
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/islutils.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 0
 .PHONY : CMakeFiles/islutils.dir/rule
@@ -355,10 +355,10 @@ clean: external/googletest/googlemock/gtest/CMakeFiles/gtest_main.dir/clean
 # Convenience name for "all" pass in the directory.
 test/all: test/CMakeFiles/test_builders.dir/all
 test/all: test/CMakeFiles/test_transformer.dir/all
-test/all: test/CMakeFiles/ppcg.dir/all
-test/all: test/CMakeFiles/test_set_maker.dir/all
 test/all: test/CMakeFiles/test_access.dir/all
 test/all: test/CMakeFiles/test_matcher.dir/all
+test/all: test/CMakeFiles/main.dir/all
+test/all: test/CMakeFiles/test_set_maker.dir/all
 
 .PHONY : test/all
 
@@ -366,15 +366,15 @@ test/all: test/CMakeFiles/test_matcher.dir/all
 test/clean: test/CMakeFiles/check-access.dir/clean
 test/clean: test/CMakeFiles/check-set_maker.dir/clean
 test/clean: test/CMakeFiles/test_builders.dir/clean
-test/clean: test/CMakeFiles/check.dir/clean
 test/clean: test/CMakeFiles/check-builders.dir/clean
 test/clean: test/CMakeFiles/test_transformer.dir/clean
-test/clean: test/CMakeFiles/ppcg.dir/clean
-test/clean: test/CMakeFiles/test_set_maker.dir/clean
-test/clean: test/CMakeFiles/check-transformer.dir/clean
+test/clean: test/CMakeFiles/check.dir/clean
 test/clean: test/CMakeFiles/test_access.dir/clean
 test/clean: test/CMakeFiles/test_matcher.dir/clean
 test/clean: test/CMakeFiles/check-matcher.dir/clean
+test/clean: test/CMakeFiles/main.dir/clean
+test/clean: test/CMakeFiles/test_set_maker.dir/clean
+test/clean: test/CMakeFiles/check-transformer.dir/clean
 
 .PHONY : test/clean
 
@@ -395,7 +395,7 @@ test/CMakeFiles/check-access.dir/all: test/CMakeFiles/test_access.dir/all
 
 # Build rule for subdir invocation for target.
 test/CMakeFiles/check-access.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 29
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 11
 	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/check-access.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 0
 .PHONY : test/CMakeFiles/check-access.dir/rule
@@ -427,7 +427,7 @@ test/CMakeFiles/check-set_maker.dir/all: test/CMakeFiles/test_set_maker.dir/all
 
 # Build rule for subdir invocation for target.
 test/CMakeFiles/check-set_maker.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 29
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 11
 	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/check-set_maker.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 0
 .PHONY : test/CMakeFiles/check-set_maker.dir/rule
@@ -456,7 +456,7 @@ test/CMakeFiles/test_builders.dir/all: external/googletest/googlemock/gtest/CMak
 test/CMakeFiles/test_builders.dir/all: external/googletest/googlemock/gtest/CMakeFiles/gtest_main.dir/all
 	$(MAKE) -f test/CMakeFiles/test_builders.dir/build.make test/CMakeFiles/test_builders.dir/depend
 	$(MAKE) -f test/CMakeFiles/test_builders.dir/build.make test/CMakeFiles/test_builders.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=51,52 "Built target test_builders"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=34,35 "Built target test_builders"
 .PHONY : test/CMakeFiles/test_builders.dir/all
 
 # Include target in all.
@@ -466,7 +466,7 @@ all: test/CMakeFiles/test_builders.dir/all
 
 # Build rule for subdir invocation for target.
 test/CMakeFiles/test_builders.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 29
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 11
 	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/test_builders.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 0
 .PHONY : test/CMakeFiles/test_builders.dir/rule
@@ -487,42 +487,6 @@ clean: test/CMakeFiles/test_builders.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target test/CMakeFiles/check.dir
-
-# All Build rule for target.
-test/CMakeFiles/check.dir/all: test/CMakeFiles/check-access.dir/all
-test/CMakeFiles/check.dir/all: test/CMakeFiles/check-set_maker.dir/all
-test/CMakeFiles/check.dir/all: test/CMakeFiles/check-builders.dir/all
-test/CMakeFiles/check.dir/all: test/CMakeFiles/check-transformer.dir/all
-test/CMakeFiles/check.dir/all: test/CMakeFiles/check-matcher.dir/all
-	$(MAKE) -f test/CMakeFiles/check.dir/build.make test/CMakeFiles/check.dir/depend
-	$(MAKE) -f test/CMakeFiles/check.dir/build.make test/CMakeFiles/check.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num= "Built target check"
-.PHONY : test/CMakeFiles/check.dir/all
-
-# Build rule for subdir invocation for target.
-test/CMakeFiles/check.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 37
-	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/check.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 0
-.PHONY : test/CMakeFiles/check.dir/rule
-
-# Convenience name for target.
-check: test/CMakeFiles/check.dir/rule
-
-.PHONY : check
-
-# clean rule for target.
-test/CMakeFiles/check.dir/clean:
-	$(MAKE) -f test/CMakeFiles/check.dir/build.make test/CMakeFiles/check.dir/clean
-.PHONY : test/CMakeFiles/check.dir/clean
-
-# clean rule for target.
-clean: test/CMakeFiles/check.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
 # Target rules for target test/CMakeFiles/check-builders.dir
 
 # All Build rule for target.
@@ -534,7 +498,7 @@ test/CMakeFiles/check-builders.dir/all: test/CMakeFiles/test_builders.dir/all
 
 # Build rule for subdir invocation for target.
 test/CMakeFiles/check-builders.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 29
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 11
 	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/check-builders.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 0
 .PHONY : test/CMakeFiles/check-builders.dir/rule
@@ -563,7 +527,7 @@ test/CMakeFiles/test_transformer.dir/all: external/googletest/googlemock/gtest/C
 test/CMakeFiles/test_transformer.dir/all: external/googletest/googlemock/gtest/CMakeFiles/gtest_main.dir/all
 	$(MAKE) -f test/CMakeFiles/test_transformer.dir/build.make test/CMakeFiles/test_transformer.dir/depend
 	$(MAKE) -f test/CMakeFiles/test_transformer.dir/build.make test/CMakeFiles/test_transformer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=57,58 "Built target test_transformer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=40,41 "Built target test_transformer"
 .PHONY : test/CMakeFiles/test_transformer.dir/all
 
 # Include target in all.
@@ -573,7 +537,7 @@ all: test/CMakeFiles/test_transformer.dir/all
 
 # Build rule for subdir invocation for target.
 test/CMakeFiles/test_transformer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 29
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 11
 	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/test_transformer.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 0
 .PHONY : test/CMakeFiles/test_transformer.dir/rule
@@ -594,110 +558,38 @@ clean: test/CMakeFiles/test_transformer.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target test/CMakeFiles/ppcg.dir
+# Target rules for target test/CMakeFiles/check.dir
 
 # All Build rule for target.
-test/CMakeFiles/ppcg.dir/all: CMakeFiles/islutils.dir/all
-	$(MAKE) -f test/CMakeFiles/ppcg.dir/build.make test/CMakeFiles/ppcg.dir/depend
-	$(MAKE) -f test/CMakeFiles/ppcg.dir/build.make test/CMakeFiles/ppcg.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=48 "Built target ppcg"
-.PHONY : test/CMakeFiles/ppcg.dir/all
-
-# Include target in all.
-all: test/CMakeFiles/ppcg.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-test/CMakeFiles/ppcg.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 24
-	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/ppcg.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 0
-.PHONY : test/CMakeFiles/ppcg.dir/rule
-
-# Convenience name for target.
-ppcg: test/CMakeFiles/ppcg.dir/rule
-
-.PHONY : ppcg
-
-# clean rule for target.
-test/CMakeFiles/ppcg.dir/clean:
-	$(MAKE) -f test/CMakeFiles/ppcg.dir/build.make test/CMakeFiles/ppcg.dir/clean
-.PHONY : test/CMakeFiles/ppcg.dir/clean
-
-# clean rule for target.
-clean: test/CMakeFiles/ppcg.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target test/CMakeFiles/test_set_maker.dir
-
-# All Build rule for target.
-test/CMakeFiles/test_set_maker.dir/all: CMakeFiles/islutils.dir/all
-test/CMakeFiles/test_set_maker.dir/all: external/googletest/googlemock/gtest/CMakeFiles/gtest.dir/all
-test/CMakeFiles/test_set_maker.dir/all: external/googletest/googlemock/gtest/CMakeFiles/gtest_main.dir/all
-	$(MAKE) -f test/CMakeFiles/test_set_maker.dir/build.make test/CMakeFiles/test_set_maker.dir/depend
-	$(MAKE) -f test/CMakeFiles/test_set_maker.dir/build.make test/CMakeFiles/test_set_maker.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=55,56 "Built target test_set_maker"
-.PHONY : test/CMakeFiles/test_set_maker.dir/all
-
-# Include target in all.
-all: test/CMakeFiles/test_set_maker.dir/all
-
-.PHONY : all
+test/CMakeFiles/check.dir/all: test/CMakeFiles/check-access.dir/all
+test/CMakeFiles/check.dir/all: test/CMakeFiles/check-set_maker.dir/all
+test/CMakeFiles/check.dir/all: test/CMakeFiles/check-builders.dir/all
+test/CMakeFiles/check.dir/all: test/CMakeFiles/check-matcher.dir/all
+test/CMakeFiles/check.dir/all: test/CMakeFiles/check-transformer.dir/all
+	$(MAKE) -f test/CMakeFiles/check.dir/build.make test/CMakeFiles/check.dir/depend
+	$(MAKE) -f test/CMakeFiles/check.dir/build.make test/CMakeFiles/check.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num= "Built target check"
+.PHONY : test/CMakeFiles/check.dir/all
 
 # Build rule for subdir invocation for target.
-test/CMakeFiles/test_set_maker.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 29
-	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/test_set_maker.dir/all
+test/CMakeFiles/check.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 19
+	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/check.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 0
-.PHONY : test/CMakeFiles/test_set_maker.dir/rule
+.PHONY : test/CMakeFiles/check.dir/rule
 
 # Convenience name for target.
-test_set_maker: test/CMakeFiles/test_set_maker.dir/rule
+check: test/CMakeFiles/check.dir/rule
 
-.PHONY : test_set_maker
-
-# clean rule for target.
-test/CMakeFiles/test_set_maker.dir/clean:
-	$(MAKE) -f test/CMakeFiles/test_set_maker.dir/build.make test/CMakeFiles/test_set_maker.dir/clean
-.PHONY : test/CMakeFiles/test_set_maker.dir/clean
+.PHONY : check
 
 # clean rule for target.
-clean: test/CMakeFiles/test_set_maker.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target test/CMakeFiles/check-transformer.dir
-
-# All Build rule for target.
-test/CMakeFiles/check-transformer.dir/all: test/CMakeFiles/test_transformer.dir/all
-	$(MAKE) -f test/CMakeFiles/check-transformer.dir/build.make test/CMakeFiles/check-transformer.dir/depend
-	$(MAKE) -f test/CMakeFiles/check-transformer.dir/build.make test/CMakeFiles/check-transformer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num= "Built target check-transformer"
-.PHONY : test/CMakeFiles/check-transformer.dir/all
-
-# Build rule for subdir invocation for target.
-test/CMakeFiles/check-transformer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 29
-	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/check-transformer.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 0
-.PHONY : test/CMakeFiles/check-transformer.dir/rule
-
-# Convenience name for target.
-check-transformer: test/CMakeFiles/check-transformer.dir/rule
-
-.PHONY : check-transformer
+test/CMakeFiles/check.dir/clean:
+	$(MAKE) -f test/CMakeFiles/check.dir/build.make test/CMakeFiles/check.dir/clean
+.PHONY : test/CMakeFiles/check.dir/clean
 
 # clean rule for target.
-test/CMakeFiles/check-transformer.dir/clean:
-	$(MAKE) -f test/CMakeFiles/check-transformer.dir/build.make test/CMakeFiles/check-transformer.dir/clean
-.PHONY : test/CMakeFiles/check-transformer.dir/clean
-
-# clean rule for target.
-clean: test/CMakeFiles/check-transformer.dir/clean
+clean: test/CMakeFiles/check.dir/clean
 
 .PHONY : clean
 
@@ -710,7 +602,7 @@ test/CMakeFiles/test_access.dir/all: external/googletest/googlemock/gtest/CMakeF
 test/CMakeFiles/test_access.dir/all: external/googletest/googlemock/gtest/CMakeFiles/gtest_main.dir/all
 	$(MAKE) -f test/CMakeFiles/test_access.dir/build.make test/CMakeFiles/test_access.dir/depend
 	$(MAKE) -f test/CMakeFiles/test_access.dir/build.make test/CMakeFiles/test_access.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=49,50 "Built target test_access"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=32,33 "Built target test_access"
 .PHONY : test/CMakeFiles/test_access.dir/all
 
 # Include target in all.
@@ -720,7 +612,7 @@ all: test/CMakeFiles/test_access.dir/all
 
 # Build rule for subdir invocation for target.
 test/CMakeFiles/test_access.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 29
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 11
 	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/test_access.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 0
 .PHONY : test/CMakeFiles/test_access.dir/rule
@@ -749,7 +641,7 @@ test/CMakeFiles/test_matcher.dir/all: external/googletest/googlemock/gtest/CMake
 test/CMakeFiles/test_matcher.dir/all: external/googletest/googlemock/gtest/CMakeFiles/gtest_main.dir/all
 	$(MAKE) -f test/CMakeFiles/test_matcher.dir/build.make test/CMakeFiles/test_matcher.dir/depend
 	$(MAKE) -f test/CMakeFiles/test_matcher.dir/build.make test/CMakeFiles/test_matcher.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=53,54 "Built target test_matcher"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=36,37 "Built target test_matcher"
 .PHONY : test/CMakeFiles/test_matcher.dir/all
 
 # Include target in all.
@@ -759,7 +651,7 @@ all: test/CMakeFiles/test_matcher.dir/all
 
 # Build rule for subdir invocation for target.
 test/CMakeFiles/test_matcher.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 29
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 11
 	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/test_matcher.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 0
 .PHONY : test/CMakeFiles/test_matcher.dir/rule
@@ -791,7 +683,7 @@ test/CMakeFiles/check-matcher.dir/all: test/CMakeFiles/test_matcher.dir/all
 
 # Build rule for subdir invocation for target.
 test/CMakeFiles/check-matcher.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 29
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 11
 	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/check-matcher.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 0
 .PHONY : test/CMakeFiles/check-matcher.dir/rule
@@ -808,6 +700,114 @@ test/CMakeFiles/check-matcher.dir/clean:
 
 # clean rule for target.
 clean: test/CMakeFiles/check-matcher.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target test/CMakeFiles/main.dir
+
+# All Build rule for target.
+test/CMakeFiles/main.dir/all: CMakeFiles/islutils.dir/all
+	$(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/depend
+	$(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=22,23 "Built target main"
+.PHONY : test/CMakeFiles/main.dir/all
+
+# Include target in all.
+all: test/CMakeFiles/main.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+test/CMakeFiles/main.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 7
+	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/main.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 0
+.PHONY : test/CMakeFiles/main.dir/rule
+
+# Convenience name for target.
+main: test/CMakeFiles/main.dir/rule
+
+.PHONY : main
+
+# clean rule for target.
+test/CMakeFiles/main.dir/clean:
+	$(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/clean
+.PHONY : test/CMakeFiles/main.dir/clean
+
+# clean rule for target.
+clean: test/CMakeFiles/main.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target test/CMakeFiles/test_set_maker.dir
+
+# All Build rule for target.
+test/CMakeFiles/test_set_maker.dir/all: CMakeFiles/islutils.dir/all
+test/CMakeFiles/test_set_maker.dir/all: external/googletest/googlemock/gtest/CMakeFiles/gtest.dir/all
+test/CMakeFiles/test_set_maker.dir/all: external/googletest/googlemock/gtest/CMakeFiles/gtest_main.dir/all
+	$(MAKE) -f test/CMakeFiles/test_set_maker.dir/build.make test/CMakeFiles/test_set_maker.dir/depend
+	$(MAKE) -f test/CMakeFiles/test_set_maker.dir/build.make test/CMakeFiles/test_set_maker.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=38,39 "Built target test_set_maker"
+.PHONY : test/CMakeFiles/test_set_maker.dir/all
+
+# Include target in all.
+all: test/CMakeFiles/test_set_maker.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+test/CMakeFiles/test_set_maker.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 11
+	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/test_set_maker.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 0
+.PHONY : test/CMakeFiles/test_set_maker.dir/rule
+
+# Convenience name for target.
+test_set_maker: test/CMakeFiles/test_set_maker.dir/rule
+
+.PHONY : test_set_maker
+
+# clean rule for target.
+test/CMakeFiles/test_set_maker.dir/clean:
+	$(MAKE) -f test/CMakeFiles/test_set_maker.dir/build.make test/CMakeFiles/test_set_maker.dir/clean
+.PHONY : test/CMakeFiles/test_set_maker.dir/clean
+
+# clean rule for target.
+clean: test/CMakeFiles/test_set_maker.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target test/CMakeFiles/check-transformer.dir
+
+# All Build rule for target.
+test/CMakeFiles/check-transformer.dir/all: test/CMakeFiles/test_transformer.dir/all
+	$(MAKE) -f test/CMakeFiles/check-transformer.dir/build.make test/CMakeFiles/check-transformer.dir/depend
+	$(MAKE) -f test/CMakeFiles/check-transformer.dir/build.make test/CMakeFiles/check-transformer.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num= "Built target check-transformer"
+.PHONY : test/CMakeFiles/check-transformer.dir/all
+
+# Build rule for subdir invocation for target.
+test/CMakeFiles/check-transformer.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 11
+	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/check-transformer.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adilla/Documents/SchedTrees/islutils/CMakeFiles 0
+.PHONY : test/CMakeFiles/check-transformer.dir/rule
+
+# Convenience name for target.
+check-transformer: test/CMakeFiles/check-transformer.dir/rule
+
+.PHONY : check-transformer
+
+# clean rule for target.
+test/CMakeFiles/check-transformer.dir/clean:
+	$(MAKE) -f test/CMakeFiles/check-transformer.dir/build.make test/CMakeFiles/check-transformer.dir/clean
+.PHONY : test/CMakeFiles/check-transformer.dir/clean
+
+# clean rule for target.
+clean: test/CMakeFiles/check-transformer.dir/clean
 
 .PHONY : clean
 

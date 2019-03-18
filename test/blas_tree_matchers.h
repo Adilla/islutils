@@ -37,7 +37,7 @@ bool findNDPermutableBand(isl::schedule_node root, isl::schedule_node *node, int
 	return ScheduleNodeMatcher::isMatching(matcher, root);
 }
 
-isl::schedule findGemmTree(isl::ctx ctx, isl::schedule_node root, isl::schedule_node node) {
+bool findGemmTree(isl::ctx ctx, isl::schedule_node root, isl::schedule_node node) {
 	//return findNDPermutableBand(root, node, 3u);
 	 auto matcher = band(
 			    [&node](isl::schedule_node n) {
@@ -48,24 +48,8 @@ isl::schedule findGemmTree(isl::ctx ctx, isl::schedule_node root, isl::schedule_
 					    return true;
 				    }
 			    }, leaf());
-	auto res = ScheduleNodeMatcher::isMatching(matcher, root);
+	return ScheduleNodeMatcher::isMatching(matcher, root);
 
-	auto newdom = isl::union_set(ctx, node.get_domain().to_str());
-	auto newmap = isl::union_map(ctx, "{S_0[i, j, k]->gemm[] : 0 <= i < 2 and j = 0 and k = 0}");
-
-	auto filterGemm = isl::union_set(ctx, "{gemm[]}");
-
-
-	auto newnode =  extension(newmap,
-					filter(filterGemm));
-
-
-	node = node.cut();
-	node = newnode.insertAt(node);
-
-	root = node.root();
-	root.get_schedule().dump();
-	return root.get_schedule();
 }
 
 bool findBatchedGemmTree(isl::schedule_node root, isl::schedule_node *node) {

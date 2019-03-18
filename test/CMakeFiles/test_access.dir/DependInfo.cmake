@@ -13,7 +13,6 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "."
   "external/install-isl/include"
   "external/install-pet/include"
-  "../ppcg"
   "external/googletest/googletest/include"
   "external/googletest/googletest"
   )

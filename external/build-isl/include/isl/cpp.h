@@ -2740,12 +2740,7 @@ public:
   inline schedule_node reset_user() const;
   inline schedule_node root() const;
   inline schedule_node sequence_splice_child(int pos) const;
-
-  inline bool is_blas_kernel() const;
-  inline int get_blas_kernel() const;
 };
-
-
 
 // declarations for isl::set
 inline set manage(__isl_take isl_set *ptr);

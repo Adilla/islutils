@@ -104,7 +104,7 @@ external/pet/src/pet-stamp/pet-configure: external/pet/tmp/pet-cfgcmd.txt
 external/pet/src/pet-stamp/pet-configure: external/pet/src/pet-stamp/pet-update
 external/pet/src/pet-stamp/pet-configure: external/pet/src/pet-stamp/pet-patch
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Performing configure step for 'pet'"
-	cd /home/adilla/Documents/SchedTrees/islutils/external/build-pet && /home/adilla/Documents/SchedTrees/islutils/external/pet/configure --prefix=/home/adilla/Documents/SchedTrees/islutils/external/install-pet --with-isl-prefix=/home/adilla/Documents/SchedTrees/islutils/external/install-isl --with-isl=system
+	cd /home/adilla/Documents/SchedTrees/islutils/external/build-pet && /home/adilla/Documents/SchedTrees/islutils/external/pet/configure --prefix=/home/adilla/Documents/SchedTrees/islutils/external/install-pet --with-isl-prefix=/home/adilla/Documents/SchedTrees/islutils/external/install-isl --with-isl=system --with-clang=system --with-clang-prefix=/home/adilla/Tools/clang+llvm-tapir5.0
 	cd /home/adilla/Documents/SchedTrees/islutils/external/build-pet && /usr/bin/cmake -E touch /home/adilla/Documents/SchedTrees/islutils/external/pet/src/pet-stamp/pet-configure
 
 external/pet/src/pet-stamp/pet-build: external/pet/src/pet-stamp/pet-configure

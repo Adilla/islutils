@@ -285,19 +285,6 @@ test_builders/fast:
 .PHONY : test_builders/fast
 
 #=============================================================================
-# Target rules for targets named check
-
-# Build rule for target.
-check: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 check
-.PHONY : check
-
-# fast build rule for target.
-check/fast:
-	$(MAKE) -f test/CMakeFiles/check.dir/build.make test/CMakeFiles/check.dir/build
-.PHONY : check/fast
-
-#=============================================================================
 # Target rules for targets named check-builders
 
 # Build rule for target.
@@ -324,43 +311,17 @@ test_transformer/fast:
 .PHONY : test_transformer/fast
 
 #=============================================================================
-# Target rules for targets named ppcg
+# Target rules for targets named check
 
 # Build rule for target.
-ppcg: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ppcg
-.PHONY : ppcg
+check: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 check
+.PHONY : check
 
 # fast build rule for target.
-ppcg/fast:
-	$(MAKE) -f test/CMakeFiles/ppcg.dir/build.make test/CMakeFiles/ppcg.dir/build
-.PHONY : ppcg/fast
-
-#=============================================================================
-# Target rules for targets named test_set_maker
-
-# Build rule for target.
-test_set_maker: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test_set_maker
-.PHONY : test_set_maker
-
-# fast build rule for target.
-test_set_maker/fast:
-	$(MAKE) -f test/CMakeFiles/test_set_maker.dir/build.make test/CMakeFiles/test_set_maker.dir/build
-.PHONY : test_set_maker/fast
-
-#=============================================================================
-# Target rules for targets named check-transformer
-
-# Build rule for target.
-check-transformer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 check-transformer
-.PHONY : check-transformer
-
-# fast build rule for target.
-check-transformer/fast:
-	$(MAKE) -f test/CMakeFiles/check-transformer.dir/build.make test/CMakeFiles/check-transformer.dir/build
-.PHONY : check-transformer/fast
+check/fast:
+	$(MAKE) -f test/CMakeFiles/check.dir/build.make test/CMakeFiles/check.dir/build
+.PHONY : check/fast
 
 #=============================================================================
 # Target rules for targets named test_access
@@ -400,6 +361,45 @@ check-matcher: cmake_check_build_system
 check-matcher/fast:
 	$(MAKE) -f test/CMakeFiles/check-matcher.dir/build.make test/CMakeFiles/check-matcher.dir/build
 .PHONY : check-matcher/fast
+
+#=============================================================================
+# Target rules for targets named main
+
+# Build rule for target.
+main: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 main
+.PHONY : main
+
+# fast build rule for target.
+main/fast:
+	$(MAKE) -f test/CMakeFiles/main.dir/build.make test/CMakeFiles/main.dir/build
+.PHONY : main/fast
+
+#=============================================================================
+# Target rules for targets named test_set_maker
+
+# Build rule for target.
+test_set_maker: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_set_maker
+.PHONY : test_set_maker
+
+# fast build rule for target.
+test_set_maker/fast:
+	$(MAKE) -f test/CMakeFiles/test_set_maker.dir/build.make test/CMakeFiles/test_set_maker.dir/build
+.PHONY : test_set_maker/fast
+
+#=============================================================================
+# Target rules for targets named check-transformer
+
+# Build rule for target.
+check-transformer: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 check-transformer
+.PHONY : check-transformer
+
+# fast build rule for target.
+check-transformer/fast:
+	$(MAKE) -f test/CMakeFiles/check-transformer.dir/build.make test/CMakeFiles/check-transformer.dir/build
+.PHONY : check-transformer/fast
 
 islutils/access_patterns.o: islutils/access_patterns.cc.o
 
@@ -455,303 +455,6 @@ islutils/builders.cc.s:
 	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/builders.cc.s
 .PHONY : islutils/builders.cc.s
 
-islutils/cpu.o: islutils/cpu.c.o
-
-.PHONY : islutils/cpu.o
-
-# target to build an object file
-islutils/cpu.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/cpu.c.o
-.PHONY : islutils/cpu.c.o
-
-islutils/cpu.i: islutils/cpu.c.i
-
-.PHONY : islutils/cpu.i
-
-# target to preprocess a source file
-islutils/cpu.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/cpu.c.i
-.PHONY : islutils/cpu.c.i
-
-islutils/cpu.s: islutils/cpu.c.s
-
-.PHONY : islutils/cpu.s
-
-# target to generate assembly for a file
-islutils/cpu.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/cpu.c.s
-.PHONY : islutils/cpu.c.s
-
-islutils/cuda.o: islutils/cuda.c.o
-
-.PHONY : islutils/cuda.o
-
-# target to build an object file
-islutils/cuda.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/cuda.c.o
-.PHONY : islutils/cuda.c.o
-
-islutils/cuda.i: islutils/cuda.c.i
-
-.PHONY : islutils/cuda.i
-
-# target to preprocess a source file
-islutils/cuda.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/cuda.c.i
-.PHONY : islutils/cuda.c.i
-
-islutils/cuda.s: islutils/cuda.c.s
-
-.PHONY : islutils/cuda.s
-
-# target to generate assembly for a file
-islutils/cuda.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/cuda.c.s
-.PHONY : islutils/cuda.c.s
-
-islutils/cuda_common.o: islutils/cuda_common.c.o
-
-.PHONY : islutils/cuda_common.o
-
-# target to build an object file
-islutils/cuda_common.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/cuda_common.c.o
-.PHONY : islutils/cuda_common.c.o
-
-islutils/cuda_common.i: islutils/cuda_common.c.i
-
-.PHONY : islutils/cuda_common.i
-
-# target to preprocess a source file
-islutils/cuda_common.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/cuda_common.c.i
-.PHONY : islutils/cuda_common.c.i
-
-islutils/cuda_common.s: islutils/cuda_common.c.s
-
-.PHONY : islutils/cuda_common.s
-
-# target to generate assembly for a file
-islutils/cuda_common.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/cuda_common.c.s
-.PHONY : islutils/cuda_common.c.s
-
-islutils/gpu.o: islutils/gpu.c.o
-
-.PHONY : islutils/gpu.o
-
-# target to build an object file
-islutils/gpu.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu.c.o
-.PHONY : islutils/gpu.c.o
-
-islutils/gpu.i: islutils/gpu.c.i
-
-.PHONY : islutils/gpu.i
-
-# target to preprocess a source file
-islutils/gpu.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu.c.i
-.PHONY : islutils/gpu.c.i
-
-islutils/gpu.s: islutils/gpu.c.s
-
-.PHONY : islutils/gpu.s
-
-# target to generate assembly for a file
-islutils/gpu.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu.c.s
-.PHONY : islutils/gpu.c.s
-
-islutils/gpu_array_tile.o: islutils/gpu_array_tile.c.o
-
-.PHONY : islutils/gpu_array_tile.o
-
-# target to build an object file
-islutils/gpu_array_tile.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu_array_tile.c.o
-.PHONY : islutils/gpu_array_tile.c.o
-
-islutils/gpu_array_tile.i: islutils/gpu_array_tile.c.i
-
-.PHONY : islutils/gpu_array_tile.i
-
-# target to preprocess a source file
-islutils/gpu_array_tile.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu_array_tile.c.i
-.PHONY : islutils/gpu_array_tile.c.i
-
-islutils/gpu_array_tile.s: islutils/gpu_array_tile.c.s
-
-.PHONY : islutils/gpu_array_tile.s
-
-# target to generate assembly for a file
-islutils/gpu_array_tile.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu_array_tile.c.s
-.PHONY : islutils/gpu_array_tile.c.s
-
-islutils/gpu_group.o: islutils/gpu_group.c.o
-
-.PHONY : islutils/gpu_group.o
-
-# target to build an object file
-islutils/gpu_group.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu_group.c.o
-.PHONY : islutils/gpu_group.c.o
-
-islutils/gpu_group.i: islutils/gpu_group.c.i
-
-.PHONY : islutils/gpu_group.i
-
-# target to preprocess a source file
-islutils/gpu_group.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu_group.c.i
-.PHONY : islutils/gpu_group.c.i
-
-islutils/gpu_group.s: islutils/gpu_group.c.s
-
-.PHONY : islutils/gpu_group.s
-
-# target to generate assembly for a file
-islutils/gpu_group.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu_group.c.s
-.PHONY : islutils/gpu_group.c.s
-
-islutils/gpu_hybrid.o: islutils/gpu_hybrid.c.o
-
-.PHONY : islutils/gpu_hybrid.o
-
-# target to build an object file
-islutils/gpu_hybrid.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu_hybrid.c.o
-.PHONY : islutils/gpu_hybrid.c.o
-
-islutils/gpu_hybrid.i: islutils/gpu_hybrid.c.i
-
-.PHONY : islutils/gpu_hybrid.i
-
-# target to preprocess a source file
-islutils/gpu_hybrid.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu_hybrid.c.i
-.PHONY : islutils/gpu_hybrid.c.i
-
-islutils/gpu_hybrid.s: islutils/gpu_hybrid.c.s
-
-.PHONY : islutils/gpu_hybrid.s
-
-# target to generate assembly for a file
-islutils/gpu_hybrid.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu_hybrid.c.s
-.PHONY : islutils/gpu_hybrid.c.s
-
-islutils/gpu_print.o: islutils/gpu_print.c.o
-
-.PHONY : islutils/gpu_print.o
-
-# target to build an object file
-islutils/gpu_print.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu_print.c.o
-.PHONY : islutils/gpu_print.c.o
-
-islutils/gpu_print.i: islutils/gpu_print.c.i
-
-.PHONY : islutils/gpu_print.i
-
-# target to preprocess a source file
-islutils/gpu_print.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu_print.c.i
-.PHONY : islutils/gpu_print.c.i
-
-islutils/gpu_print.s: islutils/gpu_print.c.s
-
-.PHONY : islutils/gpu_print.s
-
-# target to generate assembly for a file
-islutils/gpu_print.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu_print.c.s
-.PHONY : islutils/gpu_print.c.s
-
-islutils/gpu_tree.o: islutils/gpu_tree.c.o
-
-.PHONY : islutils/gpu_tree.o
-
-# target to build an object file
-islutils/gpu_tree.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu_tree.c.o
-.PHONY : islutils/gpu_tree.c.o
-
-islutils/gpu_tree.i: islutils/gpu_tree.c.i
-
-.PHONY : islutils/gpu_tree.i
-
-# target to preprocess a source file
-islutils/gpu_tree.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu_tree.c.i
-.PHONY : islutils/gpu_tree.c.i
-
-islutils/gpu_tree.s: islutils/gpu_tree.c.s
-
-.PHONY : islutils/gpu_tree.s
-
-# target to generate assembly for a file
-islutils/gpu_tree.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/gpu_tree.c.s
-.PHONY : islutils/gpu_tree.c.s
-
-islutils/grouping.o: islutils/grouping.c.o
-
-.PHONY : islutils/grouping.o
-
-# target to build an object file
-islutils/grouping.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/grouping.c.o
-.PHONY : islutils/grouping.c.o
-
-islutils/grouping.i: islutils/grouping.c.i
-
-.PHONY : islutils/grouping.i
-
-# target to preprocess a source file
-islutils/grouping.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/grouping.c.i
-.PHONY : islutils/grouping.c.i
-
-islutils/grouping.s: islutils/grouping.c.s
-
-.PHONY : islutils/grouping.s
-
-# target to generate assembly for a file
-islutils/grouping.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/grouping.c.s
-.PHONY : islutils/grouping.c.s
-
-islutils/hybrid.o: islutils/hybrid.c.o
-
-.PHONY : islutils/hybrid.o
-
-# target to build an object file
-islutils/hybrid.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/hybrid.c.o
-.PHONY : islutils/hybrid.c.o
-
-islutils/hybrid.i: islutils/hybrid.c.i
-
-.PHONY : islutils/hybrid.i
-
-# target to preprocess a source file
-islutils/hybrid.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/hybrid.c.i
-.PHONY : islutils/hybrid.c.i
-
-islutils/hybrid.s: islutils/hybrid.c.s
-
-.PHONY : islutils/hybrid.s
-
-# target to generate assembly for a file
-islutils/hybrid.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/hybrid.c.s
-.PHONY : islutils/hybrid.c.s
-
 islutils/matchers.o: islutils/matchers.cc.o
 
 .PHONY : islutils/matchers.o
@@ -778,33 +481,6 @@ islutils/matchers.s: islutils/matchers.cc.s
 islutils/matchers.cc.s:
 	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/matchers.cc.s
 .PHONY : islutils/matchers.cc.s
-
-islutils/opencl.o: islutils/opencl.c.o
-
-.PHONY : islutils/opencl.o
-
-# target to build an object file
-islutils/opencl.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/opencl.c.o
-.PHONY : islutils/opencl.c.o
-
-islutils/opencl.i: islutils/opencl.c.i
-
-.PHONY : islutils/opencl.i
-
-# target to preprocess a source file
-islutils/opencl.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/opencl.c.i
-.PHONY : islutils/opencl.c.i
-
-islutils/opencl.s: islutils/opencl.c.s
-
-.PHONY : islutils/opencl.s
-
-# target to generate assembly for a file
-islutils/opencl.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/opencl.c.s
-.PHONY : islutils/opencl.c.s
 
 islutils/pet_wrapper.o: islutils/pet_wrapper.cc.o
 
@@ -833,168 +509,6 @@ islutils/pet_wrapper.cc.s:
 	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/pet_wrapper.cc.s
 .PHONY : islutils/pet_wrapper.cc.s
 
-islutils/ppcg.o: islutils/ppcg.c.o
-
-.PHONY : islutils/ppcg.o
-
-# target to build an object file
-islutils/ppcg.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/ppcg.c.o
-.PHONY : islutils/ppcg.c.o
-
-islutils/ppcg.i: islutils/ppcg.c.i
-
-.PHONY : islutils/ppcg.i
-
-# target to preprocess a source file
-islutils/ppcg.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/ppcg.c.i
-.PHONY : islutils/ppcg.c.i
-
-islutils/ppcg.s: islutils/ppcg.c.s
-
-.PHONY : islutils/ppcg.s
-
-# target to generate assembly for a file
-islutils/ppcg.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/ppcg.c.s
-.PHONY : islutils/ppcg.c.s
-
-islutils/ppcg_options.o: islutils/ppcg_options.c.o
-
-.PHONY : islutils/ppcg_options.o
-
-# target to build an object file
-islutils/ppcg_options.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/ppcg_options.c.o
-.PHONY : islutils/ppcg_options.c.o
-
-islutils/ppcg_options.i: islutils/ppcg_options.c.i
-
-.PHONY : islutils/ppcg_options.i
-
-# target to preprocess a source file
-islutils/ppcg_options.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/ppcg_options.c.i
-.PHONY : islutils/ppcg_options.c.i
-
-islutils/ppcg_options.s: islutils/ppcg_options.c.s
-
-.PHONY : islutils/ppcg_options.s
-
-# target to generate assembly for a file
-islutils/ppcg_options.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/ppcg_options.c.s
-.PHONY : islutils/ppcg_options.c.s
-
-islutils/print.o: islutils/print.c.o
-
-.PHONY : islutils/print.o
-
-# target to build an object file
-islutils/print.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/print.c.o
-.PHONY : islutils/print.c.o
-
-islutils/print.i: islutils/print.c.i
-
-.PHONY : islutils/print.i
-
-# target to preprocess a source file
-islutils/print.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/print.c.i
-.PHONY : islutils/print.c.i
-
-islutils/print.s: islutils/print.c.s
-
-.PHONY : islutils/print.s
-
-# target to generate assembly for a file
-islutils/print.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/print.c.s
-.PHONY : islutils/print.c.s
-
-islutils/schedule.o: islutils/schedule.c.o
-
-.PHONY : islutils/schedule.o
-
-# target to build an object file
-islutils/schedule.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/schedule.c.o
-.PHONY : islutils/schedule.c.o
-
-islutils/schedule.i: islutils/schedule.c.i
-
-.PHONY : islutils/schedule.i
-
-# target to preprocess a source file
-islutils/schedule.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/schedule.c.i
-.PHONY : islutils/schedule.c.i
-
-islutils/schedule.s: islutils/schedule.c.s
-
-.PHONY : islutils/schedule.s
-
-# target to generate assembly for a file
-islutils/schedule.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/schedule.c.s
-.PHONY : islutils/schedule.c.s
-
-islutils/util.o: islutils/util.c.o
-
-.PHONY : islutils/util.o
-
-# target to build an object file
-islutils/util.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/util.c.o
-.PHONY : islutils/util.c.o
-
-islutils/util.i: islutils/util.c.i
-
-.PHONY : islutils/util.i
-
-# target to preprocess a source file
-islutils/util.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/util.c.i
-.PHONY : islutils/util.c.i
-
-islutils/util.s: islutils/util.c.s
-
-.PHONY : islutils/util.s
-
-# target to generate assembly for a file
-islutils/util.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/util.c.s
-.PHONY : islutils/util.c.s
-
-islutils/version.o: islutils/version.c.o
-
-.PHONY : islutils/version.o
-
-# target to build an object file
-islutils/version.c.o:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/version.c.o
-.PHONY : islutils/version.c.o
-
-islutils/version.i: islutils/version.c.i
-
-.PHONY : islutils/version.i
-
-# target to preprocess a source file
-islutils/version.c.i:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/version.c.i
-.PHONY : islutils/version.c.i
-
-islutils/version.s: islutils/version.c.s
-
-.PHONY : islutils/version.s
-
-# target to generate assembly for a file
-islutils/version.c.s:
-	$(MAKE) -f CMakeFiles/islutils.dir/build.make CMakeFiles/islutils.dir/islutils/version.c.s
-.PHONY : islutils/version.c.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1017,81 +531,27 @@ help:
 	@echo "... check-access"
 	@echo "... check-set_maker"
 	@echo "... test_builders"
-	@echo "... check"
 	@echo "... check-builders"
 	@echo "... test_transformer"
-	@echo "... ppcg"
-	@echo "... test_set_maker"
-	@echo "... check-transformer"
+	@echo "... check"
 	@echo "... test_access"
 	@echo "... test_matcher"
 	@echo "... check-matcher"
+	@echo "... main"
+	@echo "... test_set_maker"
+	@echo "... check-transformer"
 	@echo "... islutils/access_patterns.o"
 	@echo "... islutils/access_patterns.i"
 	@echo "... islutils/access_patterns.s"
 	@echo "... islutils/builders.o"
 	@echo "... islutils/builders.i"
 	@echo "... islutils/builders.s"
-	@echo "... islutils/cpu.o"
-	@echo "... islutils/cpu.i"
-	@echo "... islutils/cpu.s"
-	@echo "... islutils/cuda.o"
-	@echo "... islutils/cuda.i"
-	@echo "... islutils/cuda.s"
-	@echo "... islutils/cuda_common.o"
-	@echo "... islutils/cuda_common.i"
-	@echo "... islutils/cuda_common.s"
-	@echo "... islutils/gpu.o"
-	@echo "... islutils/gpu.i"
-	@echo "... islutils/gpu.s"
-	@echo "... islutils/gpu_array_tile.o"
-	@echo "... islutils/gpu_array_tile.i"
-	@echo "... islutils/gpu_array_tile.s"
-	@echo "... islutils/gpu_group.o"
-	@echo "... islutils/gpu_group.i"
-	@echo "... islutils/gpu_group.s"
-	@echo "... islutils/gpu_hybrid.o"
-	@echo "... islutils/gpu_hybrid.i"
-	@echo "... islutils/gpu_hybrid.s"
-	@echo "... islutils/gpu_print.o"
-	@echo "... islutils/gpu_print.i"
-	@echo "... islutils/gpu_print.s"
-	@echo "... islutils/gpu_tree.o"
-	@echo "... islutils/gpu_tree.i"
-	@echo "... islutils/gpu_tree.s"
-	@echo "... islutils/grouping.o"
-	@echo "... islutils/grouping.i"
-	@echo "... islutils/grouping.s"
-	@echo "... islutils/hybrid.o"
-	@echo "... islutils/hybrid.i"
-	@echo "... islutils/hybrid.s"
 	@echo "... islutils/matchers.o"
 	@echo "... islutils/matchers.i"
 	@echo "... islutils/matchers.s"
-	@echo "... islutils/opencl.o"
-	@echo "... islutils/opencl.i"
-	@echo "... islutils/opencl.s"
 	@echo "... islutils/pet_wrapper.o"
 	@echo "... islutils/pet_wrapper.i"
 	@echo "... islutils/pet_wrapper.s"
-	@echo "... islutils/ppcg.o"
-	@echo "... islutils/ppcg.i"
-	@echo "... islutils/ppcg.s"
-	@echo "... islutils/ppcg_options.o"
-	@echo "... islutils/ppcg_options.i"
-	@echo "... islutils/ppcg_options.s"
-	@echo "... islutils/print.o"
-	@echo "... islutils/print.i"
-	@echo "... islutils/print.s"
-	@echo "... islutils/schedule.o"
-	@echo "... islutils/schedule.i"
-	@echo "... islutils/schedule.s"
-	@echo "... islutils/util.o"
-	@echo "... islutils/util.i"
-	@echo "... islutils/util.s"
-	@echo "... islutils/version.o"
-	@echo "... islutils/version.i"
-	@echo "... islutils/version.s"
 .PHONY : help
 
 

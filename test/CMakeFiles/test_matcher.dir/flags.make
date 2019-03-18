@@ -6,5 +6,5 @@ CXX_FLAGS = -Wall -pedantic -O3   -pthread -std=gnu++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/adilla/Documents/SchedTrees/islutils -I/home/adilla/Documents/SchedTrees/islutils/external/install-isl/include -I/home/adilla/Documents/SchedTrees/islutils/external/install-pet/include -I/home/adilla/Documents/SchedTrees/islutils/../ppcg -isystem /home/adilla/Documents/SchedTrees/islutils/external/googletest/googletest/include -isystem /home/adilla/Documents/SchedTrees/islutils/external/googletest/googletest 
+CXX_INCLUDES = -I/home/adilla/Documents/SchedTrees/islutils -I/home/adilla/Documents/SchedTrees/islutils/external/install-isl/include -I/home/adilla/Documents/SchedTrees/islutils/external/install-pet/include -isystem /home/adilla/Documents/SchedTrees/islutils/external/googletest/googletest/include -isystem /home/adilla/Documents/SchedTrees/islutils/external/googletest/googletest 
 

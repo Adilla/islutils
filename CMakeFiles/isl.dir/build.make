@@ -104,7 +104,7 @@ external/isl/src/isl-stamp/isl-configure: external/isl/tmp/isl-cfgcmd.txt
 external/isl/src/isl-stamp/isl-configure: external/isl/src/isl-stamp/isl-update
 external/isl/src/isl-stamp/isl-configure: external/isl/src/isl-stamp/isl-patch
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/adilla/Documents/SchedTrees/islutils/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Performing configure step for 'isl'"
-	cd /home/adilla/Documents/SchedTrees/islutils/external/build-isl && /home/adilla/Documents/SchedTrees/islutils/external/isl/configure --prefix=/home/adilla/Documents/SchedTrees/islutils/external/install-isl --with-clang=system --with-int=imath-32
+	cd /home/adilla/Documents/SchedTrees/islutils/external/build-isl && /home/adilla/Documents/SchedTrees/islutils/external/isl/configure --prefix=/home/adilla/Documents/SchedTrees/islutils/external/install-isl --with-clang=system --with-clang-prefix=/home/adilla/Tools/clang+llvm-tapir5.0 --with-int=imath-32
 	cd /home/adilla/Documents/SchedTrees/islutils/external/build-isl && /usr/bin/cmake -E touch /home/adilla/Documents/SchedTrees/islutils/external/isl/src/isl-stamp/isl-configure
 
 external/isl/src/isl-stamp/isl-build: external/isl/src/isl-stamp/isl-configure

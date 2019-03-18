@@ -22,8 +22,6 @@
 #include <isl/ast_build.h>
 #include <isl/schedule.h>
 
-#include "ppcg.h"
-
 
 using util::ScopedCtx;
 

@@ -6,5 +6,5 @@ CXX_FLAGS = -Wall -pedantic -O3   -std=gnu++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/adilla/Documents/SchedTrees/islutils -I/home/adilla/Documents/SchedTrees/islutils/external/install-isl/include -I/home/adilla/Documents/SchedTrees/islutils/external/install-pet/include -I/home/adilla/Documents/SchedTrees/islutils/../ppcg 
+CXX_INCLUDES = -I/home/adilla/Documents/SchedTrees/islutils -I/home/adilla/Documents/SchedTrees/islutils/external/install-isl/include -I/home/adilla/Documents/SchedTrees/islutils/external/install-pet/include 
 

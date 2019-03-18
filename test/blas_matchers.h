@@ -30,12 +30,12 @@ const int nbKernels = 6;
 using UmapPair = std::map<int, isl::union_map>;
 using Accesses = std::vector<std::pair<isl::union_map, isl::union_map>>;
 
-isl::schedule findGemm(isl::ctx, Scop, isl::union_map, isl::union_map);
-// bool findTranspose(isl::ctx, Scop, isl::union_map, isl::union_map);
-// bool findTransposeGemm(isl::ctx, Scop, isl::union_map, isl::union_map);
-// bool findBatchGemm(isl::ctx, Scop, isl::union_map, isl::union_map);
-// bool findAxpy(isl::ctx, Scop, isl::union_map, isl::union_map);
-// bool findDotProduct(isl::ctx, Scop, isl::union_map, isl::union_map);
+bool findGemm(isl::ctx, Scop, isl::union_map, isl::union_map);
+bool findTranspose(isl::ctx, Scop, isl::union_map, isl::union_map);
+bool findTransposeGemm(isl::ctx, Scop, isl::union_map, isl::union_map);
+bool findBatchGemm(isl::ctx, Scop, isl::union_map, isl::union_map);
+bool findAxpy(isl::ctx, Scop, isl::union_map, isl::union_map);
+bool findDotProduct(isl::ctx, Scop, isl::union_map, isl::union_map);
 
 Accesses associateRW(UmapPair, UmapPair);
 
@@ -112,7 +112,7 @@ searchRootNodeMatchingDomain(isl::schedule_node node,
 }
 
 
-isl::schedule 
+bool 
 findPatterns(isl::ctx ctx, 
                          Scop scop) {
     isl::union_map _reads = scop.reads.curry();
@@ -174,14 +174,13 @@ findPatterns(isl::ctx ctx,
 }
 
 
-isl::schedule
+bool
 findGemm(isl::ctx ctx,
                                      Scop scop,
                                      isl::union_map reads,
                                      isl::union_map writes) {
-    bool _isGemm = findGemmAccess(ctx, reads, writes);
-    isl::schedule isGemm;
-    if (_isGemm == true) {
+    bool isGemm = findGemmAccess(ctx, reads, writes);
+    if (isGemm == true) {
         auto accessdom = reads.domain();
         auto scheddom = scop.schedule.get_domain();
 

@@ -34,12 +34,6 @@ islutils/matchers.h
 islutils/die.h
 /home/adilla/Documents/SchedTrees/islutils/islutils/islutils/die.h
 
-/home/adilla/Documents/SchedTrees/islutils/islutils/operators.h
-type_traits.h
-/home/adilla/Documents/SchedTrees/islutils/islutils/type_traits.h
-isl/cpp.h
--
-
 /home/adilla/Documents/SchedTrees/islutils/islutils/pet_wrapper.cc
 pet.h
 -
@@ -669,16 +663,4 @@ vector
 -
 matchers-inl.h
 islutils/matchers-inl.h
-
-islutils/operators.h
-type_traits.h
-islutils/type_traits.h
-isl/cpp.h
--
-
-islutils/type_traits.h
-isl/cpp.h
--
-type_traits
--
 

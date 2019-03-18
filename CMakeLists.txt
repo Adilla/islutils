@@ -41,7 +41,6 @@ set(pet_LIB "libpet.so")
 set(pet_LIBPATH "external/install-pet/lib/")
 set(pet_INCLUDE "external/install-pet/include")
 
-set(ppcg_INCLUDE "../ppcg")
 
 link_directories(islutils ${isl_LIBPATH} ${pet_LIBPATH})
 
@@ -50,27 +49,9 @@ add_library(islutils
             islutils/matchers.cc
             islutils/builders.cc
             islutils/pet_wrapper.cc
-            islutils/access_patterns.cc
-	    islutils/cpu.c
-	    islutils/cuda.c
-	    islutils/cuda_common.c
-	    islutils/gpu_array_tile.c
-	    islutils/gpu.c
-	    islutils/gpu_group.c
-	    islutils/gpu_hybrid.c
-	    islutils/gpu_print.c
-	    islutils/gpu_tree.c
-	    islutils/grouping.c
-	    islutils/hybrid.c
-	    islutils/opencl.c
-	    islutils/ppcg.c
-	    islutils/ppcg_options.c
-	    islutils/schedule.c
-	    islutils/util.c
-	    islutils/version.c
-	    islutils/print.c)
+            islutils/access_patterns.cc)
 target_include_directories(islutils PUBLIC ${CMAKE_SOURCE_DIR})
-target_include_directories(islutils PUBLIC ${isl_INCLUDE} ${pet_INCLUDE} ${ppcg_INCLUDE})
+target_include_directories(islutils PUBLIC ${isl_INCLUDE} ${pet_INCLUDE})
 target_link_libraries(islutils ${isl_LIB} ${pet_LIB})
 
 add_subdirectory(test)
