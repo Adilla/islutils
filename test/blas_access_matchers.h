@@ -165,6 +165,11 @@ bool findDotProductAccess(isl::ctx ctx, isl::union_map reads, isl::union_map wri
 	// in the presence of a reduction on a scalar variable, so I guess this 
 	// test is incomplete
 	if ((matchReads.size() == 2u)) {
+    // int i = matchReads[0][_i].payload().inputDimPos_;
+    // int i2 = matchReads[1][_i].payload().inputDimPos_;
+    // auto localWrite = writes.get_map_list().get_map(0);
+    // localWrite.dump();
+    // bool isMatch = i == i2;
 		return true;
 	} else {
 		return false;

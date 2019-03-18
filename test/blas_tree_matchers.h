@@ -3,7 +3,6 @@
 
 #include "utils.h"
 using namespace matchers;
-using namespace builders;
 
 namespace blasTreeMatchers {
 
@@ -37,19 +36,8 @@ bool findNDPermutableBand(isl::schedule_node root, isl::schedule_node *node, int
 	return ScheduleNodeMatcher::isMatching(matcher, root);
 }
 
-bool findGemmTree(isl::ctx ctx, isl::schedule_node root, isl::schedule_node node) {
-	//return findNDPermutableBand(root, node, 3u);
-	 auto matcher = band(
-			    [&node](isl::schedule_node n) {
- 				    if (isl_schedule_node_band_n_member(n.get()) < 3u) {
-					    return false;
-				    } else {
-					    node = n;
-					    return true;
-				    }
-			    }, leaf());
-	return ScheduleNodeMatcher::isMatching(matcher, root);
-
+bool findGemmTree(isl::schedule_node root, isl::schedule_node *node) {
+	return findNDPermutableBand(root, node, 3u);
 }
 
 bool findBatchedGemmTree(isl::schedule_node root, isl::schedule_node *node) {
