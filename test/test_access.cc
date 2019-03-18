@@ -143,6 +143,18 @@ makeTwoGroupPlaceholderSet(isl::ctx ctx) {
 }
 
 
+bool
+hasNoRedundancy(std::vector<int> vec) {
+  bool isNotRedundant = true;
+  for (int i = 1; i < vec.size(); ++i) {
+    if (vec[i] == vec[i-1]) {
+      isNotRedundant = false;
+      break;
+    }
+  }
+  return isNotRedundant;
+}
+
 
 TEST(AccessMatcher, MMContraction) {
   using namespace matchers;

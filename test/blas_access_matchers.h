@@ -158,22 +158,94 @@ bool findDotProductAccess(isl::ctx ctx, isl::union_map reads, isl::union_map wri
 	auto _i = placeholder(ctx);
 	auto localReads = allOf(access(_i));
 	auto matchReads = match(reads, localReads);
-	// Since the fact that there is a match means that there are only
-	// two patterns that follow this access same specification, then
-	// the condition on have 2 reads is enough to ensure that it is 
-	// a dotProduct. However, I don't know how to ensure that we are indeed
-	// in the presence of a reduction on a scalar variable, so I guess this 
-	// test is incomplete
 	if ((matchReads.size() == 2u)) {
-    // int i = matchReads[0][_i].payload().inputDimPos_;
-    // int i2 = matchReads[1][_i].payload().inputDimPos_;
-    // auto localWrite = writes.get_map_list().get_map(0);
-    // localWrite.dump();
-    // bool isMatch = i == i2;
-		return true;
+    int i = matchReads[0][_i].payload().inputDimPos_;
+    int i2 = matchReads[1][_i].payload().inputDimPos_;
+    auto localWrite = writes.get_map_list().get_map(0);
+    std::cout << localWrite.range().dim(isl::dim::out) << std::endl;
+
+    localWrite.dump();
+    bool isMatch = i == i2;
+		return isMatch;
 	} else {
 		return false;
 	}
+}
+
+
+std::map<std::string, std::vector<int>> 
+reconstruct (isl::ctx ctx, isl::union_map umap) {
+  auto _k = placeholder(ctx);
+  std::map<std::string, std::vector<int>> output;
+  int counter = 0;
+  auto acc = match(umap, allOf(access(dim(counter, _k))));
+  while (acc.size() > 0u) {
+    for (int i = 0; i < acc.size(); ++i) {
+      auto space = acc[i][_k].candidateSpaces();
+      auto name = space[0].get_tuple_name(isl::dim::out);
+      output[name].push_back(acc[i][_k].payload().inputDimPos_);
+    }
+    counter += 1;
+    acc = match(umap, allOf(access(dim(counter, _k))));
+  }
+  return output;
+}
+
+bool
+hasNoRedundancy(std::vector<int> vec) {
+  bool isNotRedundant = true;
+  for (int i = 1; i < vec.size(); ++i) {
+    if (vec[i] == vec[i-1]) {
+      isNotRedundant = false;
+      break;
+    }
+  }
+  return isNotRedundant;
+}
+
+/* Conditions for contraction: C = A . B
+  1. There is a reduction
+  2. None of the access functions have redundant iterators
+  3. All iterators in A not appearing in C do apepar in B.
+  4. The remaining iterators of A and B == those of C. */
+bool findContraction(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
+
+  std::vector<int> diff1, diff2;
+
+  auto _reads = reconstruct(ctx, reads);
+  auto _writes = reconstruct(ctx, writes);
+  auto wname = _writes.begin()->first;
+  auto wacc = _writes.begin()->second;
+  auto op1 = _reads.begin();
+  auto op2 = std::next(op1);
+
+  auto isReduction = (_reads.find(wname) != _reads.end()) && (wacc == _reads[wname]);
+
+  // Clean up
+  _reads.erase(wname);
+
+  // Sort arrays before continuing. This is necessary
+  // to use the following std:: functions.
+  std::sort(wacc.begin(), wacc.end());
+  std::sort(op1->second.begin(), op1->second.end());
+  std::sort(op2->second.begin(), op2->second.end());
+
+  bool noRedundancy = hasNoRedundancy(wacc);
+  for (auto r : _reads) {
+    noRedundancy = noRedundancy && hasNoRedundancy(r.second);
+  }
+ 
+  std::set_difference(op1->second.begin(), op1->second.end(), 
+                      wacc.begin(), wacc.end(), 
+                      std::back_inserter(diff1));
+  std::set_difference(op2->second.begin(), op2->second.end(), 
+                      wacc.begin(), wacc.end(), 
+                      std::back_inserter(diff2));
+
+  bool hasContractionAxes = (diff1.size() > 0) && (diff1 == diff2);
+
+  return isReduction && noRedundancy && hasContractionAxes;
+
 }
 
 bool findTransposeAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
