@@ -161,11 +161,14 @@ bool findDotProductAccess(isl::ctx ctx, isl::union_map reads, isl::union_map wri
 	if ((matchReads.size() == 2u)) {
     int i = matchReads[0][_i].payload().inputDimPos_;
     int i2 = matchReads[1][_i].payload().inputDimPos_;
-    auto localWrite = writes.get_map_list().get_map(0);
-    std::cout << localWrite.range().dim(isl::dim::out) << std::endl;
-
-    localWrite.dump();
-    bool isMatch = i == i2;
+    auto localWrite = writes.range().unwrap();
+    auto writeSpaceDim = localWrite.dim(isl::dim::out);
+    // Another condition is the that the scalar variable
+    // should be inductive.
+    // I include writes.is_subset(reads) as a 
+    // condition to ensure that but the code crashes 
+    // when == False.
+    bool isMatch = (i == i2) && (writeSpaceDim == 0) && (writes.is_subset(reads));
 		return isMatch;
 	} else {
 		return false;
@@ -179,10 +182,12 @@ reconstruct (isl::ctx ctx, isl::union_map umap) {
   std::map<std::string, std::vector<int>> output;
   int counter = 0;
   auto acc = match(umap, allOf(access(dim(counter, _k))));
+
   while (acc.size() > 0u) {
+
     for (int i = 0; i < acc.size(); ++i) {
       auto space = acc[i][_k].candidateSpaces();
-      auto name = space[0].get_tuple_name(isl::dim::out);
+      auto name = space[0].range().unwrap().get_tuple_name(isl::dim::out);
       output[name].push_back(acc[i][_k].payload().inputDimPos_);
     }
     counter += 1;
@@ -208,12 +213,12 @@ hasNoRedundancy(std::vector<int> vec) {
   2. None of the access functions have redundant iterators
   3. All iterators in A not appearing in C do apepar in B.
   4. The remaining iterators of A and B == those of C. */
-bool findContraction(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
-
+bool findContractionAccess(isl::ctx ctx, isl::union_map reads, isl::union_map writes) {
   std::vector<int> diff1, diff2;
 
   auto _reads = reconstruct(ctx, reads);
   auto _writes = reconstruct(ctx, writes);
+
   auto wname = _writes.begin()->first;
   auto wacc = _writes.begin()->second;
   auto op1 = _reads.begin();

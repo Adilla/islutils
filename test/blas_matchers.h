@@ -23,9 +23,10 @@ enum Kernel {
 	BatchGemm,
 	Axpy,
 	DotProduct,
+  Contraction
 };
 
-const int nbKernels = 6;
+const int nbKernels = 7;
 
 using UmapPair = std::map<int, isl::union_map>;
 using Accesses = std::vector<std::pair<isl::union_map, isl::union_map>>;
@@ -36,6 +37,7 @@ bool findTransposeGemm(isl::ctx, Scop, isl::union_map, isl::union_map);
 bool findBatchGemm(isl::ctx, Scop, isl::union_map, isl::union_map);
 bool findAxpy(isl::ctx, Scop, isl::union_map, isl::union_map);
 bool findDotProduct(isl::ctx, Scop, isl::union_map, isl::union_map);
+bool findContraction(isl::ctx, Scop, isl::union_map, isl::union_map);
 
 Accesses associateRW(UmapPair, UmapPair);
 
@@ -137,8 +139,8 @@ findPatterns(isl::ctx ctx,
 			Kernel k = (Kernel)i;
 			switch(k) {
 				case Gemm :
-					if (findGemm(ctx, scop, reads, writes) == true)
-						return Gemm;
+					//if (findGemm(ctx, scop, reads, writes) == true)
+					//	return Gemm;
 					break;
 				case Transpose : {
 					if (findTranspose(ctx, scop, reads, writes) == true)
@@ -164,6 +166,12 @@ findPatterns(isl::ctx ctx,
 					if (findAxpy(ctx, scop, reads, writes) == true)
 						return Axpy;
 				}
+        break;
+        case Contraction : {
+          if (findContraction(ctx, scop, reads, writes) == true)
+            return Contraction;
+        }
+        break;
 			}
 		}
 	}
@@ -319,6 +327,15 @@ findDotProduct(isl::ctx ctx,
 	}
 	return isDotProduct;
 }
+
+bool 
+findContraction(isl::ctx ctx,
+                Scop scop,
+                isl::union_map reads,
+                isl::union_map writes) {
+  bool isContraction = findContractionAccess(ctx, reads, writes);
+  return isContraction;
+  }
 } // namespace blasMathers
 
 #endif
