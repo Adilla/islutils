@@ -139,8 +139,9 @@ findPatterns(isl::ctx ctx,
 			Kernel k = (Kernel)i;
 			switch(k) {
 				case Gemm :
-					//if (findGemm(ctx, scop, reads, writes) == true)
-					//	return Gemm;
+					if (findGemm(ctx, scop, reads, writes) == true) {
+						return Gemm;
+          }
 					break;
 				case Transpose : {
 					if (findTranspose(ctx, scop, reads, writes) == true)

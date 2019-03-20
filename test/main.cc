@@ -21,6 +21,7 @@
 #include <pet.h>
 
 #include "blas_matchers.h"
+#include "codegen.h"
 
 using util::ScopedCtx;
 using namespace matchers;
@@ -43,7 +44,9 @@ int main(int argc, char **argv) {
 
     
     auto pattern = blasMatchers::findPatterns(ctx, scop);
-  
+    if (pattern > 0) {
+      codegen(pattern);
+    }
 
     std::cout << pattern << std::endl;;
 

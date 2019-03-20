@@ -7,6 +7,8 @@
 #include "islutils/locus.h"
 #include "islutils/matchers.h"
 #include "islutils/pet_wrapper.h"
+#include "islutils/aff_op.h"
+#include "islutils/cout_overloading.h"
 
 // static inline isl::union_map filterOutCarriedDependences(isl::union_map, isl::schedule_node);
 // static bool canMerge(isl::schedule_node, isl::union_map);
